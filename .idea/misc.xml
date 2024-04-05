@@ -1,0 +1,21 @@
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/cygwin64/home/witchel/svn-class/u/droid/kcode/Demo/RecyclerViewFrag/app/src/main/res/drawable/ic_check_black_24dp.xml" value="0.3145" />
+        <entry key="..\:/cygwin64/home/witchel/svn-class/u/droid/kcode/Demo/RecyclerViewFrag/app/src/main/res/layout/fragment_dashboard.xml" value="0.5177083333333333" />
+        <entry key="..\:/cygwin64/home/witchel/svn-class/u/droid/kcode/Demo/RecyclerViewFrag/app/src/main/res/layout/fragment_favorites.xml" value="0.2703125" />
+        <entry key="..\:/cygwin64/home/witchel/svn-class/u/droid/kcode/Demo/RecyclerViewFrag/app/src/main/res/layout/fragment_simple.xml" value="0.2703125" />
+        <entry key="..\:/cygwin64/home/witchel/svn-class/u/droid/kcode/Demo/RecyclerViewFrag/app/src/main/res/layout/recycler_main.xml" value="0.2703125" />
+        <entry key="..\:/cygwin64/home/witchel/svn-class/u/droid/kcode/Demo/RecyclerViewFrag/app/src/main/res/layout/row.xml" value="0.3509963768115942" />
+        <entry key="..\:/cygwin64/home/witchel/svn-class/u/droid/kcode/Demo/RecyclerViewFrag/app/src/main/res/menu/bottom_nav_menu.xml" value="0.3567708333333333" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="jbr-17" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_payments">
+
+    <!-- Navigation places the label in the Toolbar -->
+    <fragment
+        android:id="@+id/navigation_payments"
+        android:name="edu.utap.recyclerviewfrag.SimpleFragment"
+        android:label="Current balances"
+        tools:layout="@layout/recycler_main" />
+    <fragment
+        android:id="@+id/navigation_items"
+        android:name="edu.utap.recyclerviewfrag.FavoritesFragment"
+        android:label="Items in the List"
+        tools:layout="@layout/items_list" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        tools:layout="@layout/settings"
+        android:name="edu.utap.recyclerviewfrag.SettingsFragment"
+        android:label="SettingsFragment" />
+    <fragment
+        android:id="@+id/addExpenseFragment"
+        android:name="edu.utap.recyclerviewfrag.AddExpenseFragment"
+        android:label="AddExpenseFragment"
+        tools:layout="@layout/add_expense"/>
+    <fragment
+        android:id="@+id/newItemFragment"
+        android:name="edu.utap.recyclerviewfrag.NewItemFragment"
+        android:label="NewItemFragment"
+        tools:layout="@layout/new_item"/>
+    <fragment
+        android:id="@+id/navigation_feed"
+        android:name="edu.utap.recyclerviewfrag.SelectFragment"
+        android:label="SelectFragment"
+        tools:layout="@layout/feed_view"/>
+</navigation>
