@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import androidx.activity.viewModels
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
@@ -15,11 +16,18 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.sharedhouse.databinding.ActivityMainBinding
 import com.example.sharedhouse.R
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
+    private val authViewModel: AuthViewModel by viewModels()
+
+    private val signInLauncher =
+        registerForActivityResult(FirebaseAuthUIActivityResultContract()) {
+            authViewModel.updateUser()
+        }
 
     private fun initMenu() {
         addMenuProvider(object : MenuProvider {
@@ -52,11 +60,13 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_payments, R.id.navigation_items, R.id.navigation_feed
+                R.id.navigation_payments, R.id.navigation_items, R.id.navigation_feed, R.id.navigation_profile
             )
         )
+
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        AuthInit(authViewModel, signInLauncher)
     }
     // navigateUp:
     // If we came here from within the app, pop the back stack

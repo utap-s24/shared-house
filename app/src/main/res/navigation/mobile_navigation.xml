@@ -36,4 +36,9 @@
         android:name="com.example.sharedhouse.FeedViewFragment"
         android:label="FeedFragment"
         tools:layout="@layout/feed_view"/>
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.example.sharedhouse.ProfileFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/profile_view"/>
 </navigation>

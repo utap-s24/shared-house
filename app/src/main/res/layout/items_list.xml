@@ -14,7 +14,8 @@
 
     <!-- Button at the bottom -->
     <Button
-        android:layout_width="match_parent"
+        android:layout_width="150dp"
+        android:layout_gravity="center"
         android:layout_height="wrap_content"
         android:text="Add Item"
         android:id="@+id/add_item"
