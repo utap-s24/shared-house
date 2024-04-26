@@ -40,6 +40,8 @@ class ListFragment : Fragment() {
 
         binding.swipeRefreshLayout.setOnRefreshListener {
             //TODO: add call to VM
+            viewModel.updateUnpurchasedItems()
+            binding.swipeRefreshLayout.isRefreshing = false
         }
 
         val adapter = ItemListAdapter(viewModel, findNavController())
