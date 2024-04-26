@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 //import edu.utap.photolist.MainViewModel
 //import edu.utap.photolist.databinding.RowBinding
 //import edu.utap.photolist.model.PhotoMeta
+import com.example.sharedhouse.db.MainViewModel
 
 
 class ItemListAdapter(private val viewModel: MainViewModel)
