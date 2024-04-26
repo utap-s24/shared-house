@@ -19,22 +19,21 @@
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp">
-
-        <Button
-            android:id="@+id/edit"
-            android:layout_width="130dp"
+        <EditText
+            android:id="@+id/new_apartment_name"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Create"
+            android:text="New Apartment"
             android:layout_weight="1"
             android:textSize="20sp"
             android:layout_marginRight="5dp"/>
-
         <Button
-            android:id="@+id/logout"
-            android:layout_width="130dp"
+            android:id="@+id/button_create"
+            android:layout_width="5dp"
             android:layout_height="wrap_content"
-            android:text="Join"
+            android:text="+"
             android:layout_weight="1"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            android:layout_marginRight="5dp"/>
     </LinearLayout>
 </LinearLayout>

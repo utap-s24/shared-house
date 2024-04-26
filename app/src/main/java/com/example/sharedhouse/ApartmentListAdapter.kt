@@ -8,10 +8,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sharedhouse.databinding.RowApartmentBinding
 import com.example.sharedhouse.db.MainViewModel
+import com.example.sharedhouse.models.Apartment
 
 class ApartmentListAdapter(private val viewModel: MainViewModel,
-                           private val clickListener: (songIndex : Int)->Unit): ListAdapter<Apartment,
-        RVDiffAdapter.ViewHolder>(Diff()) {
+                           private val clickListener: (index : Int)->Unit): ListAdapter<Apartment,
+        ApartmentListAdapter.ViewHolder>(Diff()) {
     class Diff : DiffUtil.ItemCallback<Apartment>() {
         // Item identity
         override fun areItemsTheSame(oldItem: Apartment, newItem: Apartment): Boolean {
@@ -19,17 +20,17 @@ class ApartmentListAdapter(private val viewModel: MainViewModel,
         }
         // Item contents are the same, but the object might have changed
         override fun areContentsTheSame(oldItem: Apartment, newItem: Apartment): Boolean {
-            return oldItem.name == newItem.name
-                    && oldItem.rawId == newItem.rawId
-                    && oldItem.time == newItem.time
+            return oldItem.apartmentID == newItem.apartmentID
+                    && oldItem.apartmentName == newItem.apartmentName
+                    && oldItem.firestoreID == newItem.firestoreID
         }
     }
 
     private fun getPos(holder: ViewHolder) : Int {
-        val pos = holder.adapterPosition
+        val pos = holder.layoutPosition
         // notifyDataSetChanged was called, so position is not known
         if( pos == RecyclerView.NO_POSITION) {
-            return holder.layoutPosition
+            return holder.adapterPosition
         }
         return pos
     }
@@ -38,7 +39,7 @@ class ApartmentListAdapter(private val viewModel: MainViewModel,
         : RecyclerView.ViewHolder(rowApartmentBinding.root) {
         init {
             //XXX Write me.
-            rowApartmentBinding.root.setOnClickListener {
+            rowApartmentBinding.joinButton.setOnClickListener {
                 clickListener(getPos(this))
             }
         }
@@ -54,14 +55,10 @@ class ApartmentListAdapter(private val viewModel: MainViewModel,
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         //XXX Write me.
-        val apartmentList = viewModel.getApartmentList()
-        val apartment = apartmentList[position]
-        holder.rowApartmentBinding.apartmentName = apartment.
-        holder.songRowBinding.textTime.text = song.time
-        if (position == viewModel.currentIndex) {
-            MainActivity.setBackgroundColor(holder.itemView, Color.YELLOW)
-        } else {
-            MainActivity.setBackgroundColor(holder.itemView, Color.TRANSPARENT)
+        val apartmentList = viewModel.getAllApartments()
+        if (apartmentList.isNotEmpty()) {
+            val apartment = apartmentList[position]
+            holder.rowApartmentBinding.apartmentName.text = apartment.apartmentName
         }
     }
 }

@@ -58,4 +58,9 @@
             android:name="id"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/apartmentListFragment"
+        android:name="com.example.sharedhouse.ApartmentListFragment"
+        android:label="ApartmentListFragment"
+        tools:layout="@layout/apartment_view"/>
 </navigation>

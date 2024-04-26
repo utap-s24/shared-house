@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.example.sharedhouse.databinding.ProfileViewBinding
 import com.example.sharedhouse.db.MainViewModel
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
@@ -46,8 +47,18 @@ class ProfileFragment : Fragment() {
             binding.nameText.text = it
         }
 
-        binding.apartmentButton.setOnClickListener {
+        dataViewModel.observeCurrentApartment().observe(viewLifecycleOwner) {
+            if (it != null) {
+                binding.apartmentButton.text = it.apartmentName
+                binding.apartmentButton.isClickable = false
+            } else {
+                binding.apartmentButton.text = "Join an apartment"
+                binding.apartmentButton.isClickable = true
+            }
+        }
 
+        binding.apartmentButton.setOnClickListener {
+            findNavController().navigate(R.id.apartmentListFragment)
         }
 
         binding.edit.setOnClickListener {

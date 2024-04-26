@@ -14,6 +14,10 @@ class MainViewModel : ViewModel() {
     private var curApartment = MutableLiveData<Apartment>()
     private var total = MutableLiveData<Double>(0.0)
 
+    init {
+        updateCurrentApartment()
+    }
+
     fun observePurchasedItems() = purchasedItems
     fun observeUnpurchasedItems() = unpurchasedItems
 
@@ -35,10 +39,12 @@ class MainViewModel : ViewModel() {
 
     fun addNewApartment(apartmentId: String) {
         FirestoreService().dbAddNewApartment(apartmentId, curUser!!)
+        updateCurrentApartment()
     }
 
     fun addUserToExistingApartment(apartmentId: String) {
         FirestoreService().dbAddUserToExisitingApartment(curUser!!,apartmentId)
+        updateCurrentApartment()
     }
 
     fun updateCurrentApartment() {

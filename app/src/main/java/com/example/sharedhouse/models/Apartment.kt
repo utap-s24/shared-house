@@ -11,5 +11,5 @@ data class Apartment (
     @ServerTimestamp
     val timeStamp: Timestamp? = null,
     @DocumentId
-    var firestoreID: String = "")
+    var firestoreID: String = ""
 )

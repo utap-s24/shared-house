@@ -146,6 +146,7 @@ class FirestoreService {
             .set(hashMapOf("name" to user.displayName))
             .addOnSuccessListener {
                 Log.d(javaClass.simpleName, "User added to apartment")
+
             }
             .addOnFailureListener { e ->
                 Log.d(javaClass.simpleName, "User add to apartment FAILED")
