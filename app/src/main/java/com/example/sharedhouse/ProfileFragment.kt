@@ -5,10 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import com.example.sharedhouse.databinding.PaymentsFragmentBinding
 import androidx.fragment.app.activityViewModels
 import com.example.sharedhouse.databinding.ProfileViewBinding
+import com.example.sharedhouse.db.MainViewModel
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 
 class ProfileFragment : Fragment() {
@@ -18,12 +17,14 @@ class ProfileFragment : Fragment() {
 
     private val signInLauncher =
         registerForActivityResult(FirebaseAuthUIActivityResultContract()) {
-            viewModel.updateUser()
+            authViewModel.updateUser()
         }
 
     private var _binding: ProfileViewBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: AuthViewModel by activityViewModels()
+    private val authViewModel: AuthViewModel by activityViewModels()
+    private val dataViewModel: MainViewModel by activityViewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,12 +38,16 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // XXX Write me. Observe data to display in UI
-        viewModel.observeEmail().observe(viewLifecycleOwner) {
+        authViewModel.observeEmail().observe(viewLifecycleOwner) {
             binding.emailText.text = it
         }
 
-        viewModel.observeDisplayName().observe(viewLifecycleOwner) {
+        authViewModel.observeDisplayName().observe(viewLifecycleOwner) {
             binding.nameText.text = it
+        }
+
+        binding.apartmentButton.setOnClickListener {
+
         }
 
         binding.edit.setOnClickListener {
@@ -50,8 +55,8 @@ class ProfileFragment : Fragment() {
         }
 
         binding.logout.setOnClickListener {
-            viewModel.signOut()
-            AuthInit(viewModel, signInLauncher)
+            authViewModel.signOut()
+            AuthInit(authViewModel, signInLauncher)
         }
     }
 

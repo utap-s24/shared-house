@@ -7,6 +7,7 @@ import com.google.firebase.firestore.ServerTimestamp
 data class UnpurchasedExpense(
     var itemName: String = "",
     var sharedWith: List<String> = emptyList(),
+    var quantity: Int = 1,
     @ServerTimestamp
     val timeStamp: Timestamp? = null,
     @DocumentId
