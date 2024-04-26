@@ -14,7 +14,7 @@ class MainViewModel : ViewModel() {
     private var curApartment = MutableLiveData<Apartment>()
     private var total = MutableLiveData<Double>(0.0)
     private var allApartments = MutableLiveData<List<Apartment>>()
-    private var allRoomates = MutableLiveData<List<String>>()
+    private var allRoomates = MutableLiveData<HashMap<String, String>>()
 
     init {
         updateCurrentApartment()

@@ -248,21 +248,27 @@ class FirestoreService {
 
 
     fun dbGetAllRoomates(
-        allRoomates: MutableLiveData<List<String>>,
+        allRoomates: MutableLiveData<HashMap<String, String>>,
         apartmentID: String,
     ) {
-        db.collection(collectionRoot)
-            .document(apartmentID)
+        db.collection("people")
+            .whereEqualTo("apartmentId", apartmentID)
             .get()
-            .addOnSuccessListener { result ->
-                Log.d(javaClass.simpleName, "all roomates fetch ${result!!.data}")
-                val roomates = result.data!!["roomates"] as List<String>
-                allRoomates.postValue(roomates)
+            .addOnSuccessListener { querySnapshot ->
+                Log.d(javaClass.simpleName, "all roomates fetch successful")
+                val roomatesMap = HashMap<String, String>()
+                for (document in querySnapshot.documents) {
+                    val userId = document.id
+                    val userName = document.getString("name") ?: "Unknown"
+                    roomatesMap[userId] = userName
+                }
+                allRoomates.postValue(roomatesMap)
             }
-            .addOnFailureListener {
-                Log.d(javaClass.simpleName, "all roomates fetch FAILED ", it)
+            .addOnFailureListener { exception ->
+                Log.d(javaClass.simpleName, "all roomates fetch FAILED", exception)
             }
     }
+
 
 
 
