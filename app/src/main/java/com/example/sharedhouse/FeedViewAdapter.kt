@@ -6,19 +6,21 @@ import androidx.navigation.NavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.sharedhouse.databinding.RowCompletedExpenseBinding
 import com.example.sharedhouse.databinding.RowItemBinding
 import com.example.sharedhouse.db.MainViewModel
+import com.example.sharedhouse.models.PurchasedItem
 import com.example.sharedhouse.models.UnpurchasedExpense
 
-class ItemListAdapter(private val viewModel: MainViewModel, private val navController: NavController )
-    : ListAdapter<UnpurchasedExpense, ItemListAdapter.VH>(Diff()) {
+class FeedViewAdapter(private val viewModel: MainViewModel, private val navController: NavController )
+    : ListAdapter<PurchasedItem, FeedViewAdapter.VH>(Diff()) {
     // This class allows the adapter to compute what has changed
-    class Diff : DiffUtil.ItemCallback<UnpurchasedExpense>() {
-        override fun areItemsTheSame(oldItem: UnpurchasedExpense, newItem: UnpurchasedExpense): Boolean {
+    class Diff : DiffUtil.ItemCallback<PurchasedItem>() {
+        override fun areItemsTheSame(oldItem: PurchasedItem, newItem: PurchasedItem): Boolean {
             return oldItem.firestoreID == newItem.firestoreID
         }
 
-        override fun areContentsTheSame(oldItem: UnpurchasedExpense, newItem: UnpurchasedExpense): Boolean {
+        override fun areContentsTheSame(oldItem: PurchasedItem, newItem: PurchasedItem): Boolean {
             if (oldItem.sharedWith.size != newItem.sharedWith.size) {
                 return false
             }
@@ -35,28 +37,30 @@ class ItemListAdapter(private val viewModel: MainViewModel, private val navContr
                 }
             }
             return oldItem.firestoreID == newItem.firestoreID
-                    && oldItem.itemName == newItem.itemName
-                    && oldItem.quantity == newItem.quantity
-                    && oldItem.timeStamp == newItem.timeStamp
+//                    && oldItem.itemName == newItem.itemName
+//                    && oldItem.quantity == newItem.quantity
+//                    && oldItem.timeStamp == newItem.timeStamp
         }
     }
 
-    inner class VH(private val rowBinding: RowItemBinding) :
+    inner class VH(private val rowBinding: RowCompletedExpenseBinding) :
         RecyclerView.ViewHolder(rowBinding.root) {
 
         fun bind(holder: VH, position: Int) {
-            val itemMeta = viewModel.getItemMeta(position)
-            holder.rowBinding.itemName.text = itemMeta.itemName
-            holder.rowBinding.itemQuantity.text = itemMeta.quantity.toString()
+            //TODO: link up viewModel to get the specific item at position
+            val itemMeta = PurchasedItem()
+            holder.rowBinding.itemName.text = itemMeta.name
+            holder.rowBinding.itemPrice.text = itemMeta.price.toString()
+            holder.rowBinding.purchaser.text = itemMeta.purchasedBy
             rowBinding.root.setOnClickListener {
-                val action = ListFragmentDirections.actionListFragmentToCompleteExpense(itemMeta.firestoreID)
+                val action = FeedViewFragmentDirections.actionNavigationFeedToCompletedExpenseView(itemMeta.firestoreID)
                 navController.navigate(action)
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
-        val rowBinding = RowItemBinding.inflate(LayoutInflater.from(parent.context),
+        val rowBinding = RowCompletedExpenseBinding.inflate(LayoutInflater.from(parent.context),
             parent, false)
         return VH(rowBinding)
     }

@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.sharedhouse.databinding.AddExpenseBinding
 import com.example.sharedhouse.databinding.CompletePurchaseBinding
 
@@ -20,6 +21,8 @@ class CompletePurchaseFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    private val args: CompletePurchaseFragmentArgs by navArgs()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -28,9 +31,14 @@ class CompletePurchaseFragment : Fragment() {
         return binding.root
     }
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val firebaseID = args.id
+
+        //TODO: get data based on firebaseID
 
         binding.submitButton.setOnClickListener {
             if (binding.priceTextField.text.isNotEmpty()) {
@@ -44,9 +52,10 @@ class CompletePurchaseFragment : Fragment() {
                     comments.add(binding.commentsTextField.text.toString())
                 }
 
-                //TODO: Connect to VM
+                //TODO: Connect to VM - firebase id val available above
             }
         }
+
 
 //        binding.pictureButton.setOnClickListener {
 //

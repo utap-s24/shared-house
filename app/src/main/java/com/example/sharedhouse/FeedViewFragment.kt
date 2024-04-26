@@ -30,8 +30,9 @@ class FeedViewFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 //        binding.recyclerView.layoutManager = LinearLayoutManager(binding.recyclerView.context)
 //        binding.recyclerView.adapter = SelectAdapter(viewModel)
-
-
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            //TODO: add call to VM
+        }
     }
 
     override fun onDestroyView() {
