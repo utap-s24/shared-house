@@ -8,7 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.sharedhouse.databinding.ItemsListBinding
+import com.example.sharedhouse.db.MainViewModel
 
 class ListFragment : Fragment() {
 
@@ -17,7 +20,7 @@ class ListFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-//    private val viewModel: MainViewModel by activityViewModels()
+    private val viewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,14 +34,21 @@ class ListFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        binding.recyclerView.layoutManager = LinearLayoutManager(binding.recyclerView.context)
-//        binding.recyclerView.adapter = FavoritesAdapter(viewModel)
 
         binding.addItem.setOnClickListener {
             findNavController().navigate(R.id.newItemFragment)
         }
 
         //TODO add a listener to each item in the list
+        val adapter = ItemListAdapter(viewModel, findNavController())
+        val rv = binding.recyclerView
+        val itemDecor = DividerItemDecoration(rv.context, LinearLayoutManager.VERTICAL)
+        rv.addItemDecoration(itemDecor)
+        rv.adapter = adapter
+        rv.layoutManager = LinearLayoutManager(rv.context)
+        binding.addItem.setOnClickListener {
+            findNavController().navigate(R.id.newItemFragment)
+        }
     }
 
     override fun onDestroyView() {

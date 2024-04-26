@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("com.google.gms.google-services")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -43,7 +44,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -57,6 +57,5 @@ dependencies {
     implementation(libs.firebase.bom)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.ui.auth)
-    implementation("com.google.firebase:firebase-firestore")
-
+    implementation(libs.firebase.firestore)
 }

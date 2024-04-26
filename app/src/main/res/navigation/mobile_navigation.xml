@@ -15,7 +15,15 @@
         android:id="@+id/navigation_items"
         android:name="com.example.sharedhouse.ListFragment"
         android:label="Items in the List"
-        tools:layout="@layout/items_list" />
+        tools:layout="@layout/items_list">
+        <action
+            android:id="@+id/action_listFragment_to_completeExpense"
+            app:destination="@id/completePurchaseFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         tools:layout="@layout/settings"
@@ -45,5 +53,9 @@
         android:id="@+id/completePurchaseFragment"
         android:name="com.example.sharedhouse.CompletePurchaseFragment"
         android:label="CompletePurchaseFragment"
-        tools:layout="@layout/complete_purchase"/>
+        tools:layout="@layout/complete_purchase">
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
 </navigation>
