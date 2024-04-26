@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.sharedhouse.R
 import com.example.sharedhouse.databinding.ItemsListBinding
@@ -27,7 +28,6 @@ class ItemListFragment : Fragment() {
     ): View {
         _binding = ItemsListBinding.inflate(inflater, container, false)
         val root: View = binding.root
-//        Log.d("FavoritesFragment", "onCreateView ${viewModel.selected}")
         return root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -35,11 +35,16 @@ class ItemListFragment : Fragment() {
 //        binding.recyclerView.layoutManager = LinearLayoutManager(binding.recyclerView.context)
 //        binding.recyclerView.adapter = FavoritesAdapter(viewModel)
 
+        val adapter = ItemListAdapter()
+        val rv = binding.recyclerView
+        val itemDecor = DividerItemDecoration(rv.context, LinearLayoutManager.VERTICAL)
+        rv.addItemDecoration(itemDecor)
+        rv.adapter = adapter
+        rv.layoutManager = LinearLayoutManager(rv.context)
+
         binding.addItem.setOnClickListener {
             findNavController().navigate(R.id.newItemFragment)
         }
-
-        //TODO add a listener to each item in the list
     }
 
     override fun onDestroyView() {

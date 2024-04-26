@@ -33,8 +33,7 @@ class AuthInit(viewModel: AuthViewModel, signInLauncher: ActivityResultLauncher<
             Log.d(TAG, "XXX user null")
             // Choose authentication providers
             val providers = arrayListOf(
-                AuthUI.IdpConfig.EmailBuilder().build(),
-                AuthUI.IdpConfig.GoogleBuilder().build())
+                AuthUI.IdpConfig.EmailBuilder().build())
 
             // Create and launch sign-in intent
             // XXX Write me. Set authentication providers and start sign-in for user
