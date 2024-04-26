@@ -48,7 +48,7 @@ class ProfileFragment : Fragment() {
         }
 
         dataViewModel.observeCurrentApartment().observe(viewLifecycleOwner) {
-            if (it != null) {
+            if (it.apartmentName != "") {
                 binding.apartmentButton.text = it.apartmentName
                 binding.apartmentButton.isClickable = false
             } else {
