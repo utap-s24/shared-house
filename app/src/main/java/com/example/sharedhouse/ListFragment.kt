@@ -48,6 +48,13 @@ class ListFragment : Fragment() {
         rv.addItemDecoration(itemDecor)
         rv.adapter = adapter
         rv.layoutManager = LinearLayoutManager(rv.context)
+        viewModel.observeCurrentApartment().observe(viewLifecycleOwner) {
+            Log.d("ListFragment", "Current apartment: $it")
+            viewModel.updateUnpurchasedItems()
+        }
+        viewModel.observeUnpurchasedItems().observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+        }
         binding.addItem.setOnClickListener {
             findNavController().navigate(R.id.newItemFragment)
         }

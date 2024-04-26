@@ -50,6 +50,12 @@ class FirestoreService {
                 purchasedExpenseList.postValue(result.documents.mapNotNull {
                     it.toObject(PurchasedItem::class.java)
                 })
+
+                result.documents.mapNotNull {
+                    Log.d(javaClass.simpleName, "all purchased expense fetch ${it.toObject(PurchasedItem::class.java)}")
+                 }
+
+
             }
             .addOnFailureListener {
                 Log.d(javaClass.simpleName, "all purchased fetch FAILED ", it)
@@ -69,6 +75,43 @@ class FirestoreService {
             }
             .addOnFailureListener { e ->
                 Log.d(javaClass.simpleName, "Unpurchased expense create FAILED \"${unpurchasedExpense.itemName}\"")
+                Log.w(javaClass.simpleName, "Error ", e)
+            }
+    }
+
+
+    fun doMoveFromUnpurchasedToPurchased(
+        unpurchasedExpense: UnpurchasedExpense,
+        amount: Double,
+        commentMap: HashMap<String, String>,
+        curUserApartmentID: String,
+        curUser: FirebaseUser,
+        callback: (PurchasedItem) -> Unit
+    ) {
+        db.collection(collectionRoot)
+            .document(curUserApartmentID)
+            .collection("unpurchased_expenses")
+            .document(unpurchasedExpense.firestoreID)
+            .delete()
+            .addOnSuccessListener {
+                Log.d(javaClass.simpleName, "Unpurchased expense delete \"${unpurchasedExpense.itemName}\"")
+                db.collection(collectionRoot)
+                    .document(curUserApartmentID)
+                    .collection("completed_expenses")
+                    .add(PurchasedItem(unpurchasedExpense.itemName, amount, unpurchasedExpense.sharedWith, curUser.uid, unpurchasedExpense.quantity, commentMap))
+                    .addOnSuccessListener {
+                        Log.d(javaClass.simpleName, "Purchased expense create \"${unpurchasedExpense.itemName}\"")
+                        var newPurchasedExpense = PurchasedItem(unpurchasedExpense.itemName, amount, unpurchasedExpense.sharedWith, curUser.uid, unpurchasedExpense.quantity, commentMap, firestoreID = it.id )
+                        callback(newPurchasedExpense)
+
+                    }
+                    .addOnFailureListener { e ->
+                        Log.d(javaClass.simpleName, "Purchased expense create FAILED \"${unpurchasedExpense.itemName}\"")
+                        Log.w(javaClass.simpleName, "Error ", e)
+                    }
+            }
+            .addOnFailureListener { e ->
+                Log.d(javaClass.simpleName, "Unpurchased expense delete FAILED \"${unpurchasedExpense.itemName}\"")
                 Log.w(javaClass.simpleName, "Error ", e)
             }
     }
@@ -106,6 +149,43 @@ class FirestoreService {
             }
 
     }
+
+    fun dbUpdateAllApartmentExpenses(apartmentId: String,  callback: (Apartment) -> Unit) {
+        // Fetch the Apartment document first
+        db.collection("apartments").document(apartmentId).get()
+            .addOnSuccessListener { documentSnapshot ->
+                val apartment = documentSnapshot.toObject(Apartment::class.java)
+                apartment?.let { apt ->
+                    // Now fetch the unpurchased expenses for the Apartment
+                    documentSnapshot.reference.collection("unpurchased_expenses").get()
+                        .addOnSuccessListener { expensesSnapshot ->
+                            val expenses = expensesSnapshot.documents.mapNotNull { it.toObject(UnpurchasedExpense::class.java) }
+                            apt.unpurchasedExpenses = expenses.toMutableList()
+                        }
+                        .addOnFailureListener { e ->
+                            // Handle error, could assign an empty list or a default value
+                            apt.unpurchasedExpenses = emptyList<UnpurchasedExpense>().toMutableList()
+                        }
+
+                    documentSnapshot.reference.collection("completed_expenses").get()
+                        .addOnSuccessListener { expensesSnapshot ->
+                            val expenses = expensesSnapshot.documents.mapNotNull { it.toObject(PurchasedItem::class.java) }
+                            apt.purchasedItems = expenses.toMutableList()
+                        }
+                        .addOnFailureListener { e ->
+                            // Handle error, could assign an empty list or a default value
+                            apt.purchasedItems = emptyList<PurchasedItem>().toMutableList()
+                        }
+                }
+                callback(apartment!!)
+            }
+            .addOnFailureListener { e ->
+                // Handle error, could invoke callback with a null or empty Apartment object
+            }
+    }
+
+
+
 
 
     fun dbGetUsersApartmentID(
@@ -157,11 +237,23 @@ class FirestoreService {
     {
         db.collection(collectionRoot)
             .document(apartmentID)
-            .collection("roomates")
-            .document(user.uid)
-            .set(hashMapOf("name" to user.displayName))
+            .get()
             .addOnSuccessListener {
-                Log.d(javaClass.simpleName, "User added to apartment")
+                Log.d(javaClass.simpleName, "apartment fetched (about to add user)")
+                val roomates = it.data!!["roomates"] as List<String>
+                val newList : MutableList<String> = roomates.toMutableList()
+                newList.add(user.uid)
+
+                 db.collection(collectionRoot)
+                    .document(apartmentID)
+                    .update("roomates", newList)
+                    .addOnSuccessListener {
+                        Log.d(javaClass.simpleName, "User added to apartment $roomates")
+                    }
+                    .addOnFailureListener { e ->
+                        Log.d(javaClass.simpleName, "User add to apartment FAILED")
+                        Log.w(javaClass.simpleName, "Error ", e)
+                    }
 
             }
             .addOnFailureListener { e ->
@@ -203,38 +295,37 @@ class FirestoreService {
     }
 
 
-
-
-
-
-    fun doMoveFromUnpurchasedToPurchased(
-        unpurchasedExpense: UnpurchasedExpense,
-        curUserApartmentID: String,
+    fun dbGetAllRoomatesNames(
+        allRoomates: MutableLiveData<HashMap<String, String>>,
+        apartmentID: String,
     ) {
-        db.collection(collectionRoot)
-            .document(curUserApartmentID)
-            .collection("unpurchased_expenses")
-            .document(unpurchasedExpense.firestoreID)
-            .delete()
-            .addOnSuccessListener {
-                Log.d(javaClass.simpleName, "Unpurchased expense delete \"${unpurchasedExpense.itemName}\"")
-                db.collection(collectionRoot)
-                    .document(curUserApartmentID)
-                    .collection("completed_expenses")
-                    .add(unpurchasedExpense)
-                    .addOnSuccessListener {
-                        Log.d(javaClass.simpleName, "Purchased expense create \"${unpurchasedExpense.itemName}\"")
-                    }
-                    .addOnFailureListener { e ->
-                        Log.d(javaClass.simpleName, "Purchased expense create FAILED \"${unpurchasedExpense.itemName}\"")
-                        Log.w(javaClass.simpleName, "Error ", e)
-                    }
+        db.collection("people")
+            .whereEqualTo("apartmentId", apartmentID)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                Log.d(javaClass.simpleName, "all roomates fetch successful")
+                val roomatesMap = HashMap<String, String>()
+                for (document in querySnapshot.documents) {
+                    val userId = document.id
+                    val userName = document.getString("name") ?: "Unknown"
+                    roomatesMap[userId] = userName
+                }
+                allRoomates.postValue(roomatesMap)
             }
-            .addOnFailureListener { e ->
-                Log.d(javaClass.simpleName, "Unpurchased expense delete FAILED \"${unpurchasedExpense.itemName}\"")
-                Log.w(javaClass.simpleName, "Error ", e)
+            .addOnFailureListener { exception ->
+                Log.d(javaClass.simpleName, "all roomates fetch FAILED", exception)
             }
     }
+
+
+
+
+
+
+
+
+
+
 
     fun doAddUserToPeopleAndApartment (
         user: FirebaseUser,

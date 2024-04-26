@@ -49,7 +49,7 @@ class ItemListAdapter(private val viewModel: MainViewModel, private val navContr
             holder.rowBinding.itemName.text = itemMeta.itemName
             holder.rowBinding.itemQuantity.text = itemMeta.quantity.toString()
             rowBinding.root.setOnClickListener {
-                val action = ListFragmentDirections.actionListFragmentToCompleteExpense(itemMeta.firestoreID)
+                val action = ListFragmentDirections.actionListFragmentToCompleteExpense(position)
                 navController.navigate(action)
             }
         }

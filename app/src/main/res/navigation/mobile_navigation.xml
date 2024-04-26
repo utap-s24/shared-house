@@ -63,8 +63,8 @@
         android:label="CompletePurchaseFragment"
         tools:layout="@layout/complete_purchase">
         <argument
-            android:name="id"
-            app:argType="string" />
+            android:name="index"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/apartmentListFragment"
