@@ -80,7 +80,7 @@ class FirestoreService {
     ) {
         val newApartment = hashMapOf(
             "name" to apartmentName,
-            "roomates" to hashMapOf(curUser.uid to curUser.displayName),
+            "roomates" to List<String>(1) { curUser.uid },
         )
 
         db.collection(collectionRoot)
@@ -116,17 +116,33 @@ class FirestoreService {
             .document(user.uid)
             .get()
             .addOnSuccessListener { result ->
-                Log.d(javaClass.simpleName, "User apartment fetch ${result!!.data}")
+                Log.d(javaClass.simpleName, "User people fetch ${result}")
+                Log.d(javaClass.simpleName, "User people fetch ${result!!.data}")
                 if (result.data == null) {
                     return@addOnSuccessListener
 
                 }
 
                 val apartmentID = result.data!!["apartmentId"] as String
-                val apartmentName = result.data!!["name"] as String
-                val roomates = result.data!!["roomates"] as List<String>
-                val newApt = Apartment(apartmentName, apartmentID, roomates, firestoreID = result.id)
-                apartmentToUpdate.postValue(newApt)
+                db.collection(collectionRoot)
+                    .document(apartmentID)
+                    .get()
+                    .addOnSuccessListener { apartmentResult ->
+                        Log.d(javaClass.simpleName, "User apartment fetch ${apartmentResult}")
+                        Log.d(javaClass.simpleName, "User apartment fetch ${apartmentResult!!.data}")
+                        if (apartmentResult.data == null) {
+                            return@addOnSuccessListener
+                        }
+
+                        val apartmentName = apartmentResult.data!!["name"] as String
+                        val roomates = apartmentResult.data!!["roomates"] as List<String>
+                        val newApt = Apartment(apartmentName, apartmentID, roomates, firestoreID = apartmentResult.id)
+                        apartmentToUpdate.postValue(newApt)
+                    }
+                    .addOnFailureListener {
+                        Log.d(javaClass.simpleName, "User apartment fetch FAILED ", it)
+                    }
+//
             }
             .addOnFailureListener {
                 Log.d(javaClass.simpleName, "User apartment fetch FAILED ", it)
