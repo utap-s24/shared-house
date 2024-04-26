@@ -1,5 +1,6 @@
 package com.example.sharedhouse
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.NavController
@@ -47,8 +48,9 @@ class FeedViewAdapter(private val viewModel: MainViewModel, private val navContr
         RecyclerView.ViewHolder(rowBinding.root) {
 
         fun bind(holder: VH, position: Int) {
-            //TODO: link up viewModel to get the specific item at position
-            val itemMeta = PurchasedItem()
+            //to-do(complete)link up viewModel to get the specific item at position
+            Log.d("FeedViewAdapter", "Binding item at position $position")
+            val itemMeta = viewModel.getPurchasedItemMeta(position)
             holder.rowBinding.itemName.text = itemMeta.name
             holder.rowBinding.itemPrice.text = itemMeta.price.toString()
             holder.rowBinding.purchaser.text = itemMeta.purchasedBy
@@ -60,6 +62,7 @@ class FeedViewAdapter(private val viewModel: MainViewModel, private val navContr
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
+        Log.d("FeedViewAdapter", "Creating new view holder")
         val rowBinding = RowCompletedExpenseBinding.inflate(LayoutInflater.from(parent.context),
             parent, false)
         return VH(rowBinding)

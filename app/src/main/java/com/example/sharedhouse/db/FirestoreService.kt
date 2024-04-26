@@ -50,6 +50,12 @@ class FirestoreService {
                 purchasedExpenseList.postValue(result.documents.mapNotNull {
                     it.toObject(PurchasedItem::class.java)
                 })
+
+                result.documents.mapNotNull {
+                    Log.d(javaClass.simpleName, "all purchased expense fetch ${it.toObject(PurchasedItem::class.java)}")
+                 }
+
+
             }
             .addOnFailureListener {
                 Log.d(javaClass.simpleName, "all purchased fetch FAILED ", it)
@@ -76,7 +82,11 @@ class FirestoreService {
 
     fun doMoveFromUnpurchasedToPurchased(
         unpurchasedExpense: UnpurchasedExpense,
+        amount: Double,
+        commentMap: HashMap<String, String>,
         curUserApartmentID: String,
+        curUser: FirebaseUser,
+        callback: (PurchasedItem) -> Unit
     ) {
         db.collection(collectionRoot)
             .document(curUserApartmentID)
@@ -88,9 +98,12 @@ class FirestoreService {
                 db.collection(collectionRoot)
                     .document(curUserApartmentID)
                     .collection("completed_expenses")
-                    .add(unpurchasedExpense)
+                    .add(PurchasedItem(unpurchasedExpense.itemName, amount, unpurchasedExpense.sharedWith, curUser.uid, unpurchasedExpense.quantity, commentMap))
                     .addOnSuccessListener {
                         Log.d(javaClass.simpleName, "Purchased expense create \"${unpurchasedExpense.itemName}\"")
+                        var newPurchasedExpense = PurchasedItem(unpurchasedExpense.itemName, amount, unpurchasedExpense.sharedWith, curUser.uid, unpurchasedExpense.quantity, commentMap, firestoreID = it.id )
+                        callback(newPurchasedExpense)
+
                     }
                     .addOnFailureListener { e ->
                         Log.d(javaClass.simpleName, "Purchased expense create FAILED \"${unpurchasedExpense.itemName}\"")
@@ -136,6 +149,41 @@ class FirestoreService {
             }
 
     }
+
+    fun dbUpdateAllApartmentExpenses(apartmentId: String,  callback: (Apartment) -> Unit) {
+        // Fetch the Apartment document first
+        db.collection("apartments").document(apartmentId).get()
+            .addOnSuccessListener { documentSnapshot ->
+                val apartment = documentSnapshot.toObject(Apartment::class.java)
+                apartment?.let { apt ->
+                    // Now fetch the unpurchased expenses for the Apartment
+                    documentSnapshot.reference.collection("unpurchased_expenses").get()
+                        .addOnSuccessListener { expensesSnapshot ->
+                            val expenses = expensesSnapshot.documents.mapNotNull { it.toObject(UnpurchasedExpense::class.java) }
+                            apt.unpurchasedExpenses = expenses.toMutableList()
+                        }
+                        .addOnFailureListener { e ->
+                            // Handle error, could assign an empty list or a default value
+                            apt.unpurchasedExpenses = emptyList<UnpurchasedExpense>().toMutableList()
+                        }
+
+                    documentSnapshot.reference.collection("completed_expenses").get()
+                        .addOnSuccessListener { expensesSnapshot ->
+                            val expenses = expensesSnapshot.documents.mapNotNull { it.toObject(PurchasedItem::class.java) }
+                            apt.purchasedItems = expenses.toMutableList()
+                        }
+                        .addOnFailureListener { e ->
+                            // Handle error, could assign an empty list or a default value
+                            apt.purchasedItems = emptyList<PurchasedItem>().toMutableList()
+                        }
+                }
+                callback(apartment!!)
+            }
+            .addOnFailureListener { e ->
+                // Handle error, could invoke callback with a null or empty Apartment object
+            }
+    }
+
 
 
 
@@ -268,6 +316,8 @@ class FirestoreService {
                 Log.d(javaClass.simpleName, "all roomates fetch FAILED", exception)
             }
     }
+
+
 
 
 

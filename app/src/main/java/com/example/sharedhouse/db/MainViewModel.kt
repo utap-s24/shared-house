@@ -67,6 +67,33 @@ class MainViewModel : ViewModel() {
         FirestoreService().dbGetAllRoomatesNames(allRoomates, curApartment.value!!.firestoreID)
     }
 
+    fun addPurchasedItem(unpurchasedExpense: UnpurchasedExpense, amount: Double, comment: String) {
+        var map = HashMap<String, String>()
+        map[curUser!!.uid] = comment
+        FirestoreService().doMoveFromUnpurchasedToPurchased(unpurchasedExpense, amount, map, curApartment.value!!.firestoreID, curUser!!){
+
+            val createdPurchaseItem = it
+            val updatedApartment = curApartment.value?.apply {
+                // Update fields in the apartment as necessary
+                // For example, you might want to remove the expense from a list of unpurchased expenses
+                this.unpurchasedExpenses.remove(unpurchasedExpense)
+                this.purchasedItems.add(createdPurchaseItem)
+                // If you have a list of purchased expenses, you might want to add it there, and so on
+            }
+            // Post the updated value to the MutableLiveData
+            curApartment.postValue(updatedApartment!!)
+        }
+//
+
+    }
+
+    fun updateAllApartmentExpenses() {
+        FirestoreService().dbUpdateAllApartmentExpenses(curApartment.value!!.firestoreID) {
+            val updatedApartment = it
+            curApartment.postValue(updatedApartment)
+        }
+    }
+
 
     fun calculateTotalUserOwed() {
         for (item in purchasedItems.value!!) {
@@ -91,6 +118,11 @@ class MainViewModel : ViewModel() {
     fun getApartmentMeta(position: Int) : Apartment {
         val apt = allApartments.value?.get(position)
         return apt!!
+    }
+
+    fun getPurchasedItemMeta(position: Int) : PurchasedItem {
+        val item = purchasedItems.value?.get(position)
+        return item!!
     }
 
 }

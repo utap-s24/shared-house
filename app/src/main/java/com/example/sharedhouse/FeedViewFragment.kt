@@ -1,11 +1,19 @@
 package com.example.sharedhouse
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.sharedhouse.databinding.FeedViewBinding
+import com.example.sharedhouse.db.MainViewModel
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.sharedhouse.models.PurchasedItem
 
 class FeedViewFragment : Fragment() {
     companion object {
@@ -16,7 +24,7 @@ class FeedViewFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-//    private val viewModel: MainViewModel by activityViewModels()
+    private val viewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,10 +36,30 @@ class FeedViewFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        binding.recyclerView.layoutManager = LinearLayoutManager(binding.recyclerView.context)
-//        binding.recyclerView.adapter = SelectAdapter(viewModel)
+//        val adapter =
+
+//        binding.recyclerView.apply {
+//            layoutManager = LinearLayoutManager(context)
+//        }
+
+        val adapter = FeedViewAdapter(viewModel, view.findNavController())
+        val rv = binding.recyclerView
+        val itemDecor = DividerItemDecoration(rv.context, LinearLayoutManager.VERTICAL)
+        rv.addItemDecoration(itemDecor)
+        rv.adapter = adapter
+        rv.layoutManager = LinearLayoutManager(rv.context)
+//        binding.recyclerView.adapter = adapter
         binding.swipeRefreshLayout.setOnRefreshListener {
             //TODO: add call to VM
+            viewModel.updatePurchasedItems()
+        }
+        viewModel.observeCurrentApartment().observe(viewLifecycleOwner) {
+            Log.d("FeedViewFragment", "Current apartment: $it")
+            viewModel.updatePurchasedItems()
+        }
+        viewModel.observePurchasedItems().observe(viewLifecycleOwner) {
+            Log.d("FeedViewFragment", "Purchased items observed: $it")
+            adapter.submitList(it)
         }
     }
 

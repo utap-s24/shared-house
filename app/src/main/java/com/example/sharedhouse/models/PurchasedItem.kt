@@ -19,6 +19,7 @@ data class PurchasedItem(
     var sharedWith: List<String> = emptyList(),
     var purchasedBy: String = "",
     var quantity: Int = 0,
-    var picture_uuid: String = "",
+    //Hashmap mapping user id to comment
+    var comments: HashMap<String, String> = hashMapOf(),
     @ServerTimestamp val timeStamp: Timestamp? = null,
     @DocumentId var firestoreID: String = "")
