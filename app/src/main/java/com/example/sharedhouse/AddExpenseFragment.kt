@@ -29,6 +29,18 @@ class AddExpenseFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.submitButton.setOnClickListener {
+            if (binding.expenseText.text.isNotEmpty() && binding.amountText.text.isNotEmpty()) {
+                val title = binding.expenseText.text
+                var amount = binding.amountText.text.toString().toDouble()
+                if (binding.taxCheckbox.isChecked) {
+                    amount *= 106.25
+                }
+
+                //TODO: Call to viewmodel
+            }
+        }
+
     }
 
     override fun onDestroyView() {

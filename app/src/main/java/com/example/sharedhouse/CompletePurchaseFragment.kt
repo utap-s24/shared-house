@@ -33,12 +33,24 @@ class CompletePurchaseFragment : Fragment() {
 
 
         binding.submitButton.setOnClickListener {
+            if (binding.priceTextField.text.isNotEmpty()) {
+                //Valid
+                var amount = binding.priceTextField.text.toString().toDouble()
+                if (binding.taxCheckbox.isChecked) {
+                    amount *= 106.25
+                }
+                var comments = mutableListOf<String>()
+                if (binding.commentsTextField.text.isNotEmpty()) {
+                    comments.add(binding.commentsTextField.text.toString())
+                }
 
+                //TODO: Connect to VM
+            }
         }
 
-        binding.pictureButton.setOnClickListener {
-
-        }
+//        binding.pictureButton.setOnClickListener {
+//
+//        }
     }
 
     override fun onDestroyView() {
