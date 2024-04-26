@@ -74,6 +74,36 @@ class FirestoreService {
     }
 
 
+    fun doMoveFromUnpurchasedToPurchased(
+        unpurchasedExpense: UnpurchasedExpense,
+        curUserApartmentID: String,
+    ) {
+        db.collection(collectionRoot)
+            .document(curUserApartmentID)
+            .collection("unpurchased_expenses")
+            .document(unpurchasedExpense.firestoreID)
+            .delete()
+            .addOnSuccessListener {
+                Log.d(javaClass.simpleName, "Unpurchased expense delete \"${unpurchasedExpense.itemName}\"")
+                db.collection(collectionRoot)
+                    .document(curUserApartmentID)
+                    .collection("completed_expenses")
+                    .add(unpurchasedExpense)
+                    .addOnSuccessListener {
+                        Log.d(javaClass.simpleName, "Purchased expense create \"${unpurchasedExpense.itemName}\"")
+                    }
+                    .addOnFailureListener { e ->
+                        Log.d(javaClass.simpleName, "Purchased expense create FAILED \"${unpurchasedExpense.itemName}\"")
+                        Log.w(javaClass.simpleName, "Error ", e)
+                    }
+            }
+            .addOnFailureListener { e ->
+                Log.d(javaClass.simpleName, "Unpurchased expense delete FAILED \"${unpurchasedExpense.itemName}\"")
+                Log.w(javaClass.simpleName, "Error ", e)
+            }
+    }
+
+
     fun dbAddNewApartment(
         apartmentName: String,
         curUser: FirebaseUser,
@@ -106,6 +136,8 @@ class FirestoreService {
             }
 
     }
+
+
 
 
     fun dbGetUsersApartmentID(
@@ -219,34 +251,7 @@ class FirestoreService {
 
 
 
-    fun doMoveFromUnpurchasedToPurchased(
-        unpurchasedExpense: UnpurchasedExpense,
-        curUserApartmentID: String,
-    ) {
-        db.collection(collectionRoot)
-            .document(curUserApartmentID)
-            .collection("unpurchased_expenses")
-            .document(unpurchasedExpense.firestoreID)
-            .delete()
-            .addOnSuccessListener {
-                Log.d(javaClass.simpleName, "Unpurchased expense delete \"${unpurchasedExpense.itemName}\"")
-                db.collection(collectionRoot)
-                    .document(curUserApartmentID)
-                    .collection("completed_expenses")
-                    .add(unpurchasedExpense)
-                    .addOnSuccessListener {
-                        Log.d(javaClass.simpleName, "Purchased expense create \"${unpurchasedExpense.itemName}\"")
-                    }
-                    .addOnFailureListener { e ->
-                        Log.d(javaClass.simpleName, "Purchased expense create FAILED \"${unpurchasedExpense.itemName}\"")
-                        Log.w(javaClass.simpleName, "Error ", e)
-                    }
-            }
-            .addOnFailureListener { e ->
-                Log.d(javaClass.simpleName, "Unpurchased expense delete FAILED \"${unpurchasedExpense.itemName}\"")
-                Log.w(javaClass.simpleName, "Error ", e)
-            }
-    }
+
 
     fun doAddUserToPeopleAndApartment (
         user: FirebaseUser,
