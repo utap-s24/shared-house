@@ -167,6 +167,23 @@ class FirestoreService {
             }
     }
 
+    fun dbGetAllAparments() : List<Apartment> {
+        val apartments = mutableListOf<Apartment>()
+        db.collection(collectionRoot)
+            .get()
+            .addOnSuccessListener { result ->
+                Log.d(javaClass.simpleName, "all apartments fetch ${result!!.documents.size}")
+                // NB: This is done on a background thread
+                apartments.addAll(result.documents.mapNotNull {
+                    it.toObject(Apartment::class.java)
+                })
+            }
+            .addOnFailureListener {
+                Log.d(javaClass.simpleName, "all apartments fetch FAILED ", it)
+            }
+        return apartments
+    }
+
 
 
 

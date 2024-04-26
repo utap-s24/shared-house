@@ -45,6 +45,10 @@ class MainViewModel : ViewModel() {
         FirestoreService().dbGetUsersApartmentID(curUser!!, curApartment)
     }
 
+    fun getAllApartments() : List<Apartment> {
+        return FirestoreService().dbGetAllAparments()
+    }
+
 
     fun calculateTotalUserOwed() {
         for (item in purchasedItems.value!!) {
