@@ -24,14 +24,14 @@ class FeedViewFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FeedViewBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-//        Log.d(SimpleFragment.TAG, "onCreateView ${viewModel.selected}")
-        return root
+        return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 //        binding.recyclerView.layoutManager = LinearLayoutManager(binding.recyclerView.context)
 //        binding.recyclerView.adapter = SelectAdapter(viewModel)
+
+
     }
 
     override fun onDestroyView() {

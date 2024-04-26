@@ -5,11 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import com.example.sharedhouse.models.Apartment
 import com.example.sharedhouse.models.PurchasedItem
 import com.example.sharedhouse.models.UnpurchasedExpense
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.toObject
 
 
 

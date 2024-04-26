@@ -65,5 +65,9 @@ class MainViewModel : ViewModel() {
         total.postValue(total.value)
     }
 
+    fun getItemMeta(position: Int) : UnpurchasedExpense {
+        val item = unpurchasedItems.value?.get(position)
+        return item!!
+    }
 
 }
