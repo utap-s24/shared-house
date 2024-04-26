@@ -57,5 +57,5 @@ dependencies {
     implementation(libs.firebase.bom)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.ui.auth)
-    implementation(libs.firebase.firestore)
+    implementation("com.google.firebase:firebase-firestore:24.11.1")
 }

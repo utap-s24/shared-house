@@ -2,6 +2,7 @@ package com.example.sharedhouse.db
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.sharedhouse.models.Apartment
 import com.example.sharedhouse.models.PurchasedItem
 import com.example.sharedhouse.models.UnpurchasedExpense
 import com.google.firebase.auth.FirebaseAuth
@@ -10,20 +11,42 @@ class MainViewModel : ViewModel() {
     private var purchasedItems = MutableLiveData<List<PurchasedItem>>()
     private var unpurchasedItems = MutableLiveData<List<UnpurchasedExpense>>()
     private var curUser = FirebaseAuth.getInstance().currentUser
-    var aptId : String = ""
+    private var curApartment = MutableLiveData<Apartment>()
     private var total = MutableLiveData<Double>(0.0)
 
     fun observePurchasedItems() = purchasedItems
     fun observeUnpurchasedItems() = unpurchasedItems
 
+    fun observeCurrentApartment() = curApartment
+
 
     fun updatePurchasedItems() {
-        FirestoreService().dbFetchAllPurchasedExpenses(purchasedItems, aptId)
+        FirestoreService().dbFetchAllPurchasedExpenses(purchasedItems, curApartment.value!!.apartmentID)
 
     }
 
     fun updateUnpurchasedItems() {
-        FirestoreService().dbFetchAllUnpurchasedExpenses(unpurchasedItems, aptId)
+        FirestoreService().dbFetchAllUnpurchasedExpenses(unpurchasedItems, curApartment.value!!.apartmentID)
+    }
+
+    fun addUnpurchasedExpense(unpurchasedExpense: UnpurchasedExpense) {
+        FirestoreService().dbAddUnpurchasedExpense(unpurchasedExpense, curApartment.value!!.apartmentID)
+    }
+
+    fun addNewApartment(apartmentId: String) {
+        FirestoreService().dbAddNewApartment(apartmentId, curUser!!)
+    }
+
+    fun addUserToExistingApartment(apartmentId: String) {
+        FirestoreService().dbAddUserToExisitingApartment(curUser!!,apartmentId)
+    }
+
+    fun updateCurrentApartment() {
+        FirestoreService().dbGetUsersApartmentID(curUser!!, curApartment)
+    }
+
+    fun getAllApartments() : List<Apartment> {
+        return FirestoreService().dbGetAllAparments()
     }
 
 
