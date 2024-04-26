@@ -43,7 +43,15 @@
         android:id="@+id/navigation_feed"
         android:name="com.example.sharedhouse.FeedViewFragment"
         android:label="FeedFragment"
-        tools:layout="@layout/feed_view"/>
+        tools:layout="@layout/feed_view">
+        <action
+            android:id="@+id/action_navigationFeed_to_completedExpenseView"
+            app:destination="@id/completedExpenseViewFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.example.sharedhouse.ProfileFragment"
@@ -63,4 +71,14 @@
         android:name="com.example.sharedhouse.ApartmentListFragment"
         android:label="ApartmentListFragment"
         tools:layout="@layout/apartment_view"/>
+    <fragment
+        android:id="@+id/completedExpenseViewFragment"
+        android:name="com.example.sharedhouse.CompletedExpenseViewFragment"
+        android:label="CompletedExpenseViewFragment"
+        tools:layout="@layout/completed_expense_view">
+        <argument
+            android:name="id"
+            app:argType="string"
+        />
+    </fragment>
 </navigation>
