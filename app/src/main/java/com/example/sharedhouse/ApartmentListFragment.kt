@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,7 +26,6 @@ class ApartmentListFragment : Fragment() {
     private var _binding: ApartmentViewBinding? = null
     private val binding get() = _binding!!
     private val dataViewModel: MainViewModel by activityViewModels()
-    private lateinit var adapter: ApartmentListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,15 +37,26 @@ class ApartmentListFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val joinClickListener: (index: Int) -> Unit = { index ->
+        val joinClickListener: (id: String) -> Unit = { id ->
             //Visual elements
-            dataViewModel.addUserToExistingApartment(dataViewModel.getAllApartments()[index].apartmentID)
+            dataViewModel.addUserToExistingApartment(id)
         }
+
+        val adapter = ApartmentListAdapter(viewModel = dataViewModel, joinClickListener)
+        val rv = binding.recyclerView
+        val itemDecor = DividerItemDecoration(rv.context, LinearLayoutManager.VERTICAL)
+        rv.addItemDecoration(itemDecor)
+        rv.adapter = adapter
+        rv.layoutManager = LinearLayoutManager(rv.context)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        adapter = ApartmentListAdapter(dataViewModel, joinClickListener)
-//        adapter.submitList(dataViewModel.getAllApartments())
-        binding.recyclerView.adapter = adapter
-        initRecyclerViewDividers(binding.recyclerView)
+        dataViewModel.getAllApartments()
+//        adapter = ApartmentListAdapter(dataViewModel, joinClickListener)
+        dataViewModel.observeAllApartments().observe (viewLifecycleOwner){
+            adapter.submitList(it)
+        }
+//
+//        binding.recyclerView.adapter = adapter
+//        initRecyclerViewDividers(binding.recyclerView)
         binding.buttonCreate.setOnClickListener {
             dataViewModel.addNewApartment(binding.newApartmentName.text.toString())
         }

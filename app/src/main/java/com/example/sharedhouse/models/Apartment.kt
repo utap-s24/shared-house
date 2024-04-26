@@ -5,9 +5,8 @@ import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.ServerTimestamp
 
 data class Apartment (
-    var apartmentName: String = "",
-    var apartmentID: String = "",
-    var roomatesIdArray: List<String> = emptyList(),
+    var name: String = "",
+    var roomates: List<String> = emptyList(),
     @ServerTimestamp
     val timeStamp: Timestamp? = null,
     @DocumentId

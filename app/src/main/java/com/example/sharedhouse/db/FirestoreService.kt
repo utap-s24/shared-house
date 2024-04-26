@@ -136,7 +136,7 @@ class FirestoreService {
 
                         val apartmentName = apartmentResult.data!!["name"] as String
                         val roomates = apartmentResult.data!!["roomates"] as List<String>
-                        val newApt = Apartment(apartmentName, apartmentID, roomates, firestoreID = apartmentResult.id)
+                        val newApt = Apartment(apartmentName, roomates, firestoreID = apartmentResult.id)
                         apartmentToUpdate.postValue(newApt)
                     }
                     .addOnFailureListener {
@@ -181,7 +181,9 @@ class FirestoreService {
             }
     }
 
-    fun dbGetAllAparments() : List<Apartment> {
+    fun dbGetAllAparments(
+        allApartments: MutableLiveData<List<Apartment>>
+    ) {
         val apartments = mutableListOf<Apartment>()
         db.collection(collectionRoot)
             .get()
@@ -191,11 +193,13 @@ class FirestoreService {
                 apartments.addAll(result.documents.mapNotNull {
                     it.toObject(Apartment::class.java)
                 })
+                Log.d(javaClass.simpleName, "apartments: $apartments")
+                allApartments.postValue(apartments)
             }
             .addOnFailureListener {
                 Log.d(javaClass.simpleName, "all apartments fetch FAILED ", it)
             }
-        return apartments
+
     }
 
 

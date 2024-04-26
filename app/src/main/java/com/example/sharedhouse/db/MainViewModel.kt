@@ -13,6 +13,7 @@ class MainViewModel : ViewModel() {
     private var curUser = FirebaseAuth.getInstance().currentUser
     private var curApartment = MutableLiveData<Apartment>()
     private var total = MutableLiveData<Double>(0.0)
+    private var allApartments = MutableLiveData<List<Apartment>>()
 
     init {
         updateCurrentApartment()
@@ -23,18 +24,20 @@ class MainViewModel : ViewModel() {
 
     fun observeCurrentApartment() = curApartment
 
+    fun observeAllApartments() = allApartments
+
 
     fun updatePurchasedItems() {
-        FirestoreService().dbFetchAllPurchasedExpenses(purchasedItems, curApartment.value!!.apartmentID)
+        FirestoreService().dbFetchAllPurchasedExpenses(purchasedItems, curApartment.value!!.firestoreID)
 
     }
 
     fun updateUnpurchasedItems() {
-        FirestoreService().dbFetchAllUnpurchasedExpenses(unpurchasedItems, curApartment.value!!.apartmentID)
+        FirestoreService().dbFetchAllUnpurchasedExpenses(unpurchasedItems, curApartment.value!!.firestoreID)
     }
 
     fun addUnpurchasedExpense(unpurchasedExpense: UnpurchasedExpense) {
-        FirestoreService().dbAddUnpurchasedExpense(unpurchasedExpense, curApartment.value!!.apartmentID)
+        FirestoreService().dbAddUnpurchasedExpense(unpurchasedExpense, curApartment.value!!.firestoreID)
     }
 
     fun addNewApartment(apartmentId: String) {
@@ -51,8 +54,8 @@ class MainViewModel : ViewModel() {
         FirestoreService().dbGetUsersApartmentID(curUser!!, curApartment)
     }
 
-    fun getAllApartments() : List<Apartment> {
-        return FirestoreService().dbGetAllAparments()
+    fun getAllApartments() {
+        FirestoreService().dbGetAllAparments(allApartments)
     }
 
 
@@ -74,6 +77,11 @@ class MainViewModel : ViewModel() {
     fun getItemMeta(position: Int) : UnpurchasedExpense {
         val item = unpurchasedItems.value?.get(position)
         return item!!
+    }
+
+    fun getApartmentMeta(position: Int) : Apartment {
+        val apt = allApartments.value?.get(position)
+        return apt!!
     }
 
 }
