@@ -105,15 +105,6 @@
         android:layout_marginRight="50dp">
 
         <Button
-            android:id="@+id/edit"
-            android:layout_width="130dp"
-            android:layout_height="wrap_content"
-            android:text="Edit Name"
-            android:layout_weight="1"
-            android:textSize="20sp"
-            android:layout_marginRight="5dp"/>
-
-        <Button
             android:id="@+id/logout"
             android:layout_width="130dp"
             android:layout_height="wrap_content"

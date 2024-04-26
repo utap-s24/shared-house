@@ -61,10 +61,6 @@ class ProfileFragment : Fragment() {
             findNavController().navigate(R.id.apartmentListFragment)
         }
 
-        binding.edit.setOnClickListener {
-
-        }
-
         binding.logout.setOnClickListener {
             authViewModel.signOut()
             AuthInit(authViewModel, signInLauncher)

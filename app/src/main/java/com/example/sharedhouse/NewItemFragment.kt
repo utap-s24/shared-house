@@ -9,7 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.example.sharedhouse.databinding.NewItemBinding
+import com.example.sharedhouse.db.MainViewModel
 
 class NewItemFragment : Fragment() {
     // https://developer.android.com/topic/libraries/view-binding#fragments
@@ -17,6 +19,7 @@ class NewItemFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private val viewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,6 +31,76 @@ class NewItemFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        var roommateCount = 0
+        viewModel.observeCurrentApartment().observe(viewLifecycleOwner) {
+            roommateCount = it.roomates.size
+        }
+
+        when (roommateCount) {
+            0 -> {
+                binding.layoutOne.visibility = View.INVISIBLE
+                binding.layoutTwo.visibility = View.INVISIBLE
+                binding.layoutThree.visibility = View.INVISIBLE
+                binding.layoutFour.visibility = View.INVISIBLE
+                binding.layoutOne.isEnabled = false
+                binding.layoutTwo.isEnabled = false
+                binding.layoutThree.isEnabled = false
+                binding.layoutFour.isEnabled = false
+            }
+            1 -> {
+                binding.layoutOne.visibility = View.VISIBLE
+                binding.layoutTwo.visibility = View.INVISIBLE
+                binding.layoutThree.visibility = View.INVISIBLE
+                binding.layoutFour.visibility = View.INVISIBLE
+                binding.layoutOne.isEnabled = true
+                binding.layoutTwo.isEnabled = false
+                binding.layoutThree.isEnabled = false
+                binding.layoutFour.isEnabled = false
+            }
+            2 -> {
+                binding.layoutOne.visibility = View.VISIBLE
+                binding.layoutTwo.visibility = View.VISIBLE
+                binding.layoutThree.visibility = View.INVISIBLE
+                binding.layoutFour.visibility = View.INVISIBLE
+                binding.layoutOne.isEnabled = true
+                binding.layoutTwo.isEnabled = true
+                binding.layoutThree.isEnabled = false
+                binding.layoutFour.isEnabled = false
+            }
+            3 -> {
+                binding.layoutOne.visibility = View.VISIBLE
+                binding.layoutTwo.visibility = View.VISIBLE
+                binding.layoutThree.visibility = View.VISIBLE
+                binding.layoutFour.visibility = View.INVISIBLE
+                binding.layoutOne.isEnabled = true
+                binding.layoutTwo.isEnabled = true
+                binding.layoutThree.isEnabled = true
+                binding.layoutFour.isEnabled = false
+            }
+            4 -> {
+                binding.layoutOne.visibility = View.VISIBLE
+                binding.layoutTwo.visibility = View.VISIBLE
+                binding.layoutThree.visibility = View.VISIBLE
+                binding.layoutFour.visibility = View.VISIBLE
+                binding.layoutOne.isEnabled = true
+                binding.layoutTwo.isEnabled = true
+                binding.layoutThree.isEnabled = true
+                binding.layoutFour.isEnabled = true
+            }
+            else -> println("Error")
+        }
+
+        binding.submitButton.setOnClickListener {
+            if (binding.itemTextField.text.isNotEmpty() && binding.quantityTextField.text.isNotEmpty()) {
+                if(binding.meCheckbox.isChecked || binding.roommateCheckboxOne.isChecked
+                    || binding.roommateCheckboxTwo.isChecked || binding.roommateCheckboxThree.isChecked
+                    || binding.roommateCheckboxFour.isChecked) {
+                    // Valid setup of item details.
+                    //TODO: Call viewmodel function here
+                }
+            }
+        }
 
     }
 

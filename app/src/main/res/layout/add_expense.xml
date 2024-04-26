@@ -22,7 +22,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/item"
+            android:id="@+id/expenseLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Expense: "
@@ -31,7 +31,7 @@
             android:textColor="@android:color/black"/>
 
         <EditText
-            android:id="@+id/item_text"
+            android:id="@+id/expenseText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
@@ -46,16 +46,17 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/amountLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Amount:  "
+            android:inputType="numberDecimal"
             android:layout_weight="1"
             android:textSize="18sp"
             android:textColor="@android:color/black"/>
 
         <EditText
-            android:id="@+id/editText1"
+            android:id="@+id/amountText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
@@ -80,7 +81,7 @@
             android:textColor="@android:color/black"/>
 
         <CheckBox
-            android:id="@+id/checkBox"
+            android:id="@+id/taxCheckbox"
             android:layout_weight="3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -89,7 +90,7 @@
 
     <!-- Button at the bottom -->
     <Button
-        android:id="@+id/button"
+        android:id="@+id/submitButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Submit"
