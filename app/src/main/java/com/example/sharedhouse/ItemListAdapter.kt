@@ -2,48 +2,48 @@ package com.example.sharedhouse
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-//import edu.utap.photolist.MainViewModel
-//import edu.utap.photolist.databinding.RowBinding
-//import edu.utap.photolist.model.PhotoMeta
+import com.example.sharedhouse.databinding.RowItemBinding
 import com.example.sharedhouse.db.MainViewModel
 
-
-class ItemListAdapter(private val viewModel: MainViewModel)
+class ItemListAdapter(private val viewModel: MainViewModel, private val navController: NavController )
     : ListAdapter<ItemMeta, ItemListAdapter.VH>(Diff()) {
     // This class allows the adapter to compute what has changed
-    class Diff : DiffUtil.ItemCallback<PhotoMeta>() {
-        override fun areItemsTheSame(oldItem: PhotoMeta, newItem: PhotoMeta): Boolean {
+    class Diff : DiffUtil.ItemCallback<ItemMeta>() {
+        override fun areItemsTheSame(oldItem: ItemMeta, newItem: ItemMeta): Boolean {
             return oldItem.firestoreID == newItem.firestoreID
         }
 
-        override fun areContentsTheSame(oldItem: PhotoMeta, newItem: PhotoMeta): Boolean {
+        override fun areContentsTheSame(oldItem: ItemMeta, newItem: ItemMeta): Boolean {
             return oldItem.firestoreID == newItem.firestoreID
-                    && oldItem.pictureTitle == newItem.pictureTitle
-                    && oldItem.ownerUid == newItem.ownerUid
-                    && oldItem.ownerName == newItem.ownerName
-                    && oldItem.uuid == newItem.uuid
-                    && oldItem.byteSize == newItem.byteSize
+                    && oldItem.name == newItem.name
+                    && oldItem.sharedWith.contentEquals(newItem.sharedWith)
+                    && oldItem.quantity == newItem.quantity
                     && oldItem.timeStamp == newItem.timeStamp
         }
     }
 
-    inner class VH(private val rowBinding: RowBinding) :
+    inner class VH(private val rowBinding: RowItemBinding) :
         RecyclerView.ViewHolder(rowBinding.root) {
 
         fun bind(holder: VH, position: Int) {
-            val photoMeta = viewModel.getPhotoMeta(position)
-            viewModel.glideFetch(photoMeta.uuid, rowBinding.rowImageView)
-            holder.rowBinding.rowPictureTitle.text = photoMeta.pictureTitle
-            holder.rowBinding.rowSize.text = photoMeta.byteSize.toString()
-            // Note to future me: It might be fun to display the date
+//            val itemMeta = viewModel.getItemMeta(position)
+            val itemMeta = ItemMeta()
+            holder.rowBinding.itemName.text = itemMeta.name
+            holder.rowBinding.itemQuantity.text = itemMeta.quantity.toString()
+            rowBinding.root.setOnClickListener {
+                val action = ListFragmentDirections.actionListFragmentToCompleteExpense(itemMeta.firestoreID)
+                navController.navigate(action)
+            }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
-        val rowBinding = RowBinding.inflate(LayoutInflater.from(parent.context),
+        val rowBinding = RowItemBinding.inflate(LayoutInflater.from(parent.context),
             parent, false)
         return VH(rowBinding)
     }
