@@ -14,6 +14,7 @@ class MainViewModel : ViewModel() {
     private var curApartment = MutableLiveData<Apartment>()
     private var total = MutableLiveData<Double>(0.0)
     private var allApartments = MutableLiveData<List<Apartment>>()
+    private var allRoomates = MutableLiveData<List<String>>()
 
     init {
         updateCurrentApartment()
@@ -25,6 +26,8 @@ class MainViewModel : ViewModel() {
     fun observeCurrentApartment() = curApartment
 
     fun observeAllApartments() = allApartments
+
+    fun observeAllRoomates() = allRoomates
 
 
     fun updatePurchasedItems() {
@@ -56,6 +59,10 @@ class MainViewModel : ViewModel() {
 
     fun getAllApartments() {
         FirestoreService().dbGetAllAparments(allApartments)
+    }
+
+    fun getAllRoomates() {
+        FirestoreService().dbGetAllRoomates(allRoomates, curApartment.value!!.firestoreID)
     }
 
 

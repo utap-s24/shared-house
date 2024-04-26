@@ -247,6 +247,24 @@ class FirestoreService {
     }
 
 
+    fun dbGetAllRoomates(
+        allRoomates: MutableLiveData<List<String>>,
+        apartmentID: String,
+    ) {
+        db.collection(collectionRoot)
+            .document(apartmentID)
+            .get()
+            .addOnSuccessListener { result ->
+                Log.d(javaClass.simpleName, "all roomates fetch ${result!!.data}")
+                val roomates = result.data!!["roomates"] as List<String>
+                allRoomates.postValue(roomates)
+            }
+            .addOnFailureListener {
+                Log.d(javaClass.simpleName, "all roomates fetch FAILED ", it)
+            }
+    }
+
+
 
 
 
