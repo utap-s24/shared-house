@@ -247,7 +247,7 @@ class FirestoreService {
     }
 
 
-    fun dbGetAllRoomates(
+    fun dbGetAllRoomatesNames(
         allRoomates: MutableLiveData<HashMap<String, String>>,
         apartmentID: String,
     ) {

@@ -1,5 +1,6 @@
 package com.example.sharedhouse.db
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.sharedhouse.models.Apartment
@@ -37,6 +38,7 @@ class MainViewModel : ViewModel() {
 
     fun updateUnpurchasedItems() {
         FirestoreService().dbFetchAllUnpurchasedExpenses(unpurchasedItems, curApartment.value!!.firestoreID)
+
     }
 
     fun addUnpurchasedExpense(unpurchasedExpense: UnpurchasedExpense) {
@@ -62,7 +64,7 @@ class MainViewModel : ViewModel() {
     }
 
     fun getAllRoomates() {
-        FirestoreService().dbGetAllRoomates(allRoomates, curApartment.value!!.firestoreID)
+        FirestoreService().dbGetAllRoomatesNames(allRoomates, curApartment.value!!.firestoreID)
     }
 
 
