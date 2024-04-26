@@ -157,11 +157,23 @@ class FirestoreService {
     {
         db.collection(collectionRoot)
             .document(apartmentID)
-            .collection("roomates")
-            .document(user.uid)
-            .set(hashMapOf("name" to user.displayName))
+            .get()
             .addOnSuccessListener {
-                Log.d(javaClass.simpleName, "User added to apartment")
+                Log.d(javaClass.simpleName, "apartment fetched (about to add user)")
+                val roomates = it.data!!["roomates"] as List<String>
+                val newList : MutableList<String> = roomates.toMutableList()
+                newList.add(user.uid)
+
+                 db.collection(collectionRoot)
+                    .document(apartmentID)
+                    .update("roomates", newList)
+                    .addOnSuccessListener {
+                        Log.d(javaClass.simpleName, "User added to apartment $roomates")
+                    }
+                    .addOnFailureListener { e ->
+                        Log.d(javaClass.simpleName, "User add to apartment FAILED")
+                        Log.w(javaClass.simpleName, "Error ", e)
+                    }
 
             }
             .addOnFailureListener { e ->
