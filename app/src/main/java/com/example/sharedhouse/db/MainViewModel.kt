@@ -19,6 +19,9 @@ class MainViewModel : ViewModel() {
 
     init {
         updateCurrentApartment()
+        curApartment.observeForever { apartment ->
+            getAllRoomates()
+        }
     }
 
     fun observePurchasedItems() = purchasedItems
@@ -56,11 +59,18 @@ class MainViewModel : ViewModel() {
     }
 
     fun updateCurrentApartment() {
-        FirestoreService().dbGetUsersApartmentID(curUser!!, curApartment)
+        FirestoreService().dbGetUsersApartmentID(curUser!!, curApartment) {
+        }
+
     }
+
 
     fun getAllApartments() {
         FirestoreService().dbGetAllAparments(allApartments)
+    }
+
+    fun getRoomatesWithoutObserving(): HashMap<String, String> {
+        return allRoomates.value!!
     }
 
     fun getAllRoomates() {

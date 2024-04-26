@@ -36,9 +36,32 @@ class CompletedExpenseViewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val firebaseId = args.id
+        val index = args.index
+        val currentPurchasedExpense = viewModel.getPurchasedItemMeta(index)
 
         //TODO: Get all the data corresponding to this expense from firebaseId
+        binding.titleTextView.text = currentPurchasedExpense.name
+        binding.priceText.text = currentPurchasedExpense.price.toString()
+        binding.quantityText.text = currentPurchasedExpense.quantity.toString()
+        viewModel.observeAllRoomates().observe(viewLifecycleOwner) {
+            Log.d("CompletedExpenseView", "the map from id to name : $it")
+            var names = ""
+            for (sharedId in currentPurchasedExpense.sharedWith) {
+              if (it.containsKey(sharedId)) {
+                names += "${it[sharedId]}, "
+
+              }
+
+            }
+            Log.d("CompletedExpenseView", "names: ${names}")
+            names = names.substring(0, names.length - 2)
+            binding.sharedWithTextView.text = names
+            binding.purchaserText.text = it[currentPurchasedExpense.purchasedBy]
+
+
+        }
+
+
 
         binding.addComment.setOnClickListener {
             if (binding.commentsTextField.text.isNotEmpty()) {
@@ -51,12 +74,15 @@ class CompletedExpenseViewFragment : Fragment() {
             //TODO: call viewmodel method to refresh
         }
 
-        val adapter = ItemListAdapter(viewModel, findNavController())
+        val adapter = CompletedExpenseViewAdapter(viewModel, findNavController(), listOf( currentPurchasedExpense.comments))
         val rv = binding.recyclerView
         val itemDecor = DividerItemDecoration(rv.context, LinearLayoutManager.VERTICAL)
         rv.addItemDecoration(itemDecor)
         rv.adapter = adapter
         rv.layoutManager = LinearLayoutManager(rv.context)
+        adapter.submitList(listOf(currentPurchasedExpense.comments))
+
+
 
     }
 

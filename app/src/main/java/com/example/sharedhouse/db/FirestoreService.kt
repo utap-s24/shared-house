@@ -191,6 +191,7 @@ class FirestoreService {
     fun dbGetUsersApartmentID(
         user: FirebaseUser,
         apartmentToUpdate: MutableLiveData<Apartment>,
+        callback: () -> Unit
     ) {
         db.collection("people")
             .document(user.uid)
@@ -218,6 +219,7 @@ class FirestoreService {
                         val roomates = apartmentResult.data!!["roomates"] as List<String>
                         val newApt = Apartment(apartmentName, roomates, firestoreID = apartmentResult.id)
                         apartmentToUpdate.postValue(newApt)
+                        callback()
                     }
                     .addOnFailureListener {
                         Log.d(javaClass.simpleName, "User apartment fetch FAILED ", it)

@@ -53,9 +53,10 @@ class FeedViewAdapter(private val viewModel: MainViewModel, private val navContr
             val itemMeta = viewModel.getPurchasedItemMeta(position)
             holder.rowBinding.itemName.text = itemMeta.name
             holder.rowBinding.itemPrice.text = itemMeta.price.toString()
-            holder.rowBinding.purchaser.text = itemMeta.purchasedBy
+            val mapOfIdToName = viewModel.getRoomatesWithoutObserving()
+            holder.rowBinding.purchaser.text = mapOfIdToName[itemMeta.purchasedBy]
             rowBinding.root.setOnClickListener {
-                val action = FeedViewFragmentDirections.actionNavigationFeedToCompletedExpenseView(itemMeta.firestoreID)
+                val action = FeedViewFragmentDirections.actionNavigationFeedToCompletedExpenseView(position)
                 navController.navigate(action)
             }
         }

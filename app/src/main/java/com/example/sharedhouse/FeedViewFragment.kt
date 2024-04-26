@@ -56,11 +56,21 @@ class FeedViewFragment : Fragment() {
         viewModel.observeCurrentApartment().observe(viewLifecycleOwner) {
             Log.d("FeedViewFragment", "Current apartment: $it")
             viewModel.updatePurchasedItems()
+
         }
+
         viewModel.observePurchasedItems().observe(viewLifecycleOwner) {
             Log.d("FeedViewFragment", "Purchased items observed: $it")
+            val list = it
             adapter.submitList(it)
+            viewModel.observeAllRoomates().observe(viewLifecycleOwner) {
+                adapter.submitList(list)
+            }
         }
+
+
+
+
     }
 
     override fun onDestroyView() {
