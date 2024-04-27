@@ -36,9 +36,11 @@ class CompletedExpenseViewAdapter(private val comments: List<HashMap<String,Stri
             if (itemMeta["name"] == FirebaseAuth.getInstance().currentUser!!.displayName) {
                 holder.rowBinding.comment.textAlignment = View.TEXT_ALIGNMENT_VIEW_END
                 holder.rowBinding.commenterLayout.gravity = Gravity.RIGHT
+                holder.rowBinding.root.background = holder.itemView.context.getDrawable(R.drawable.border)
             } else {
                 holder.rowBinding.comment.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
                 holder.rowBinding.commenterLayout.gravity = Gravity.LEFT
+                holder.rowBinding.root.background = holder.itemView.context.getDrawable(R.drawable.border_different)
             }
         }
     }
