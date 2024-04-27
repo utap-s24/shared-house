@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:id="@+id/swipeRefreshLayout">
     <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -102,6 +103,39 @@
                 android:text="Quantity Value"
                 android:textSize="20sp"
                 android:textColor="@android:color/black"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:id="@+id/paidLayout"
+            android:visibility="visible"
+            android:clickable="false">
+            <TextView
+                android:id="@+id/paidLabel"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:text="Have I Paid?"
+                android:textSize="20sp"
+                android:textColor="@android:color/black"
+
+                android:layout_marginEnd="10dp"/>
+            <TextView
+                android:id="@+id/paidText"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="Yes/No"
+                android:textSize="20sp"
+                android:textColor="@android:color/black"/>
+            <Button
+                android:layout_width="70dp"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:text="Pay"
+                android:id="@+id/pay_button"
+                android:layout_margin="8dp"/>
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView

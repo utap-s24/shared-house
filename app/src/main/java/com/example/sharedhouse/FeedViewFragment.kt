@@ -36,11 +36,6 @@ class FeedViewFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        val adapter =
-
-//        binding.recyclerView.apply {
-//            layoutManager = LinearLayoutManager(context)
-//        }
 
         val adapter = FeedViewAdapter(viewModel, view.findNavController())
         val rv = binding.recyclerView
@@ -48,10 +43,11 @@ class FeedViewFragment : Fragment() {
         rv.addItemDecoration(itemDecor)
         rv.adapter = adapter
         rv.layoutManager = LinearLayoutManager(rv.context)
-//        binding.recyclerView.adapter = adapter
+
         binding.swipeRefreshLayout.setOnRefreshListener {
             //TODO: add call to VM
             viewModel.updatePurchasedItems()
+            binding.swipeRefreshLayout.isRefreshing = false
         }
         viewModel.observeCurrentApartment().observe(viewLifecycleOwner) {
             Log.d("FeedViewFragment", "Current apartment: $it")
