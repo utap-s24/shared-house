@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_payments">
+
+    <!-- Navigation places the label in the Toolbar -->
+    <fragment
+        android:id="@+id/navigation_payments"
+        android:name="com.example.sharedhouse.PaymentsFragment"
+        android:label="Current Balance"
+        tools:layout="@layout/payments_fragment" />
+    <fragment
+        android:id="@+id/navigation_items"
+        android:name="com.example.sharedhouse.ListFragment"
+        android:label="Need to Purchase"
+        tools:layout="@layout/items_list">
+        <action
+            android:id="@+id/action_listFragment_to_completeExpense"
+            app:destination="@id/completePurchaseFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
+    <fragment
+        android:id="@+id/addExpenseFragment"
+        android:name="com.example.sharedhouse.AddExpenseFragment"
+        android:label="New Expense"
+        tools:layout="@layout/add_expense"/>
+    <fragment
+        android:id="@+id/newItemFragment"
+        android:name="com.example.sharedhouse.NewItemFragment"
+        android:label="New Purchase"
+        tools:layout="@layout/new_item"/>
+    <fragment
+        android:id="@+id/navigation_feed"
+        android:name="com.example.sharedhouse.FeedViewFragment"
+        android:label="Purchase Feed"
+        tools:layout="@layout/feed_view">
+        <action
+            android:id="@+id/action_navigationFeed_to_completedExpenseView"
+            app:destination="@id/completedExpenseViewFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.example.sharedhouse.ProfileFragment"
+        android:label="My Profile"
+        tools:layout="@layout/profile_view"/>
+    <fragment
+        android:id="@+id/completePurchaseFragment"
+        android:name="com.example.sharedhouse.CompletePurchaseFragment"
+        android:label="Completing a Purchase"
+        tools:layout="@layout/complete_purchase">
+        <argument
+            android:name="index"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/apartmentListFragment"
+        android:name="com.example.sharedhouse.ApartmentListFragment"
+        android:label="Available Apartments"
+        tools:layout="@layout/apartment_view"/>
+    <fragment
+        android:id="@+id/completedExpenseViewFragment"
+        android:name="com.example.sharedhouse.CompletedExpenseViewFragment"
+        android:label="Completed"
+        tools:layout="@layout/completed_expense_view">
+        <argument
+            android:name="index"
+            app:argType="integer"
+        />
+    </fragment>
+</navigation>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp">
+    <TextView
+        android:id="@+id/apartment_name"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:text="Apartment Number/Name"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:layout_marginStart="16dp"
+        android:gravity="center_vertical"/>
+
+    <Button
+        android:id="@+id/join_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="Join"/>
+
+</LinearLayout>
