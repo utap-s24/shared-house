@@ -14,6 +14,7 @@ class AuthViewModel : ViewModel() {
         displayName.postValue("No user")
         email.postValue("No email, no active user")
         uid.postValue("No uid, no active user")
+
     }
 
     fun updateUser() {

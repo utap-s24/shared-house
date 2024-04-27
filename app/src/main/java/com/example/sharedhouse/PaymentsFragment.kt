@@ -55,6 +55,11 @@ class PaymentsFragment : Fragment() {
 
         authViewModel.observeDisplayName().observe(viewLifecycleOwner) {
             binding.netBalanceLabel.text = "$it's Net Balance"
+            if (it != "Uninitialized") {
+                dataViewModel.updateCurrentApartment()
+            }
+
+
         }
 
 

@@ -17,7 +17,6 @@ class MainViewModel : ViewModel() {
     private var allRoomates = MutableLiveData<HashMap<String, String>>()
 
     init {
-        updateCurrentApartment()
         curApartment.observeForever { apartment ->
             getAllRoomates()
 
