@@ -41,15 +41,18 @@ class CompletedExpenseViewFragment : Fragment() {
         val index = args.index
         var currentPurchasedExpense = viewModel.getPurchasedItemMeta(index)
 
-        binding.titleTextView.text = currentPurchasedExpense.name
+
         binding.priceText.text = String.format("%.2f", currentPurchasedExpense.price)
 
         if (currentPurchasedExpense.quantity == 0) {
             binding.quantityLayout.visibility = View.GONE
             binding.quantityText.text = "should not see this"
+            binding.titleTextView.text = "Expense: ${currentPurchasedExpense.name}"
+
         } else {
             binding.quantityLayout.visibility = View.VISIBLE
             binding.quantityText.text = currentPurchasedExpense.quantity.toString()
+            binding.titleTextView.text = "Purchase: ${currentPurchasedExpense.name}"
         }
 
 

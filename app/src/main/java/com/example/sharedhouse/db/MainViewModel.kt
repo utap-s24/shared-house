@@ -11,7 +11,6 @@ import com.google.firebase.auth.FirebaseAuth
 class MainViewModel : ViewModel() {
     private var purchasedItems = MutableLiveData<List<PurchasedItem>>()
     private var unpurchasedItems = MutableLiveData<List<UnpurchasedExpense>>()
-    private var curUser = FirebaseAuth.getInstance().currentUser
     private var curApartment = MutableLiveData<Apartment>()
     private var total = MutableLiveData<HashMap<String, Double>>()
     private var allApartments = MutableLiveData<List<Apartment>>()
@@ -54,19 +53,23 @@ class MainViewModel : ViewModel() {
     }
 
     fun addNewApartment(apartmentId: String) {
-        FirestoreService().dbAddNewApartment(apartmentId, curUser!!)
-        updateCurrentApartment()
+        FirestoreService().dbAddNewApartment(apartmentId, FirebaseAuth.getInstance().currentUser!!) {
+            updateCurrentApartment()
+        }
+
     }
 
     fun addUserToExistingApartment(apartmentId: String) {
-        FirestoreService().dbAddUserToExisitingApartment(curUser!!,apartmentId)
-        updateCurrentApartment()
+        FirestoreService().dbAddUserToExisitingApartment(FirebaseAuth.getInstance().currentUser!!,apartmentId) {
+            updateCurrentApartment()
+        }
+
     }
 
     fun updateCurrentApartment() {
-        FirestoreService().dbGetUsersApartmentID(curUser!!, curApartment) {
-        }
+        FirestoreService().dbGetUsersApartmentID(FirebaseAuth.getInstance().currentUser!!, curApartment) {
 
+        }
     }
 
 
@@ -89,13 +92,13 @@ class MainViewModel : ViewModel() {
 
         var commentList = ArrayList<HashMap<String, String>>()
         var map = HashMap<String, String>()
-        map["name"] = curUser!!.displayName!!
+        map["name"] = FirebaseAuth.getInstance().currentUser!!.displayName!!
         map["comment"] = comment
         if (comment.isNotEmpty()){
             commentList.add(map)
         }
 
-        FirestoreService().doMoveFromUnpurchasedToPurchased(unpurchasedExpense, amount, commentList, curApartment.value!!.firestoreID, curUser!!){
+        FirestoreService().doMoveFromUnpurchasedToPurchased(unpurchasedExpense, amount, commentList, curApartment.value!!.firestoreID, FirebaseAuth.getInstance().currentUser!!){
 
             val createdPurchaseItem = it
             val updatedApartment = curApartment.value?.apply {
@@ -123,7 +126,7 @@ class MainViewModel : ViewModel() {
 
     fun addCommentToPurchasedItem(purchasedItem: PurchasedItem, comment: String) {
         var map = HashMap<String, String>()
-        map["name"] = curUser!!.displayName!!
+        map["name"] = FirebaseAuth.getInstance().currentUser!!.displayName!!
         map["comment"] = comment
         FirestoreService().dbAddCommentToPurchasedItem(purchasedItem, map, curApartment.value!!.firestoreID){
           updatePurchasedItems()
@@ -138,7 +141,7 @@ class MainViewModel : ViewModel() {
 
     fun updateHasPaid(purchasedItem: PurchasedItem) {
         val map = purchasedItem.hasPaid
-        map[curUser!!.uid] = true
+        map[FirebaseAuth.getInstance().currentUser!!.uid] = true
         purchasedItem.hasPaid = map
 
 
@@ -149,7 +152,7 @@ class MainViewModel : ViewModel() {
 
 
     fun calculateTotals() {
-        var curUserId = curUser!!.uid
+        var curUserId = FirebaseAuth.getInstance().currentUser!!.uid
         var mapOfIdToOwed = HashMap<String, Double>()
         for (id in allRoomates.value!!.keys) {
             mapOfIdToOwed[id] = 0.0

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.sharedhouse.models.Apartment
 import com.example.sharedhouse.models.PurchasedItem
 import com.example.sharedhouse.models.UnpurchasedExpense
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -197,12 +198,12 @@ class FirestoreService {
     fun dbAddNewApartment(
         apartmentName: String,
         curUser: FirebaseUser,
+        callback: () -> Unit
     ) {
         val newApartment = hashMapOf(
             "name" to apartmentName,
             "roomates" to List<String>(1) { curUser.uid },
         )
-
         db.collection(collectionRoot)
             .add(newApartment)
             .addOnSuccessListener {
@@ -214,6 +215,7 @@ class FirestoreService {
                     .set(hashMapOf("name" to curUser.displayName, "apartmentId" to it.id))
                     .addOnSuccessListener {
                         Log.d(javaClass.simpleName, "User added to people")
+                        callback()
                     }
                     .addOnFailureListener { e ->
                         Log.d(javaClass.simpleName, "User add to people FAILED")
@@ -312,6 +314,7 @@ class FirestoreService {
     fun dbAddUserToExisitingApartment (
         user: FirebaseUser,
         apartmentID: String,
+        callback: () -> Unit
     )
     {
         db.collection(collectionRoot)
@@ -328,6 +331,7 @@ class FirestoreService {
                     .update("roomates", newList)
                     .addOnSuccessListener {
                         Log.d(javaClass.simpleName, "User added to apartment $roomates")
+                        callback()
                     }
                     .addOnFailureListener { e ->
                         Log.d(javaClass.simpleName, "User add to apartment FAILED")

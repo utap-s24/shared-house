@@ -47,6 +47,11 @@ class PaymentsFragment : Fragment() {
             findNavController().navigate(R.id.addExpenseFragment)
         }
 
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            dataViewModel.updatePurchasedItems()
+            binding.swipeRefreshLayout.isRefreshing = false
+        }
+
         binding.netBalanceLabel.text = "${FirebaseAuth.getInstance().currentUser!!.displayName}'s Net Balance"
 
         dataViewModel.observePurchasedItems().observe(viewLifecycleOwner) {
@@ -56,12 +61,12 @@ class PaymentsFragment : Fragment() {
         dataViewModel.observeTotal().observe(viewLifecycleOwner) {
             val totalOwed = it[FirebaseAuth.getInstance().currentUser!!.uid]
 
-            if (totalOwed!! >= 0.0) {
+            if (totalOwed!! > 0.0) {
                 binding.netBalanceText.setTextColor(Color.rgb(139, 0, 0))
-                binding.netBalanceText.text = "You owe ${String.format("%.2f", totalOwed)}"
+                binding.netBalanceText.text = "You owe $${String.format("%.2f", totalOwed)}"
             } else {
                 binding.netBalanceText.setTextColor(Color.rgb( 1,  150,  32))
-                binding.netBalanceText.text = "You are owed ${String.format("%.2f", abs(totalOwed))}"
+                binding.netBalanceText.text = "You are owed $${String.format("%.2f", abs(totalOwed))}"
             }
         }
 
@@ -99,12 +104,12 @@ class PaymentsFragment : Fragment() {
                     }
                     dataViewModel.observeTotal().observe(viewLifecycleOwner) {
                         val totalOwed = it[apt.roomates[0]]
-                        if (totalOwed!! >= 0.0) {
+                        if (totalOwed!! > 0.0) {
                             binding.personOneBalance.setTextColor(Color.rgb(139, 0, 0))
-                            binding.personOneBalance.text = "You owe them ${String.format("%.2f", totalOwed)}"
+                            binding.personOneBalance.text = "You owe them $${String.format("%.2f", totalOwed)}"
                         } else {
                             binding.personOneBalance.setTextColor(Color.rgb( 1,  150,  32))
-                            binding.personOneBalance.text = "They owe you ${String.format("%.2f", abs(totalOwed))}"
+                            binding.personOneBalance.text = "They owe you $${String.format("%.2f", abs(totalOwed))}"
                         }
                     }
                 }
@@ -127,20 +132,20 @@ class PaymentsFragment : Fragment() {
 
                     dataViewModel.observeTotal().observe(viewLifecycleOwner) {
                         val totalOwed = it[apt.roomates[0]]
-                        if (totalOwed!! >= 0.0) {
+                        if (totalOwed!! > 0.0) {
                             binding.personOneBalance.setTextColor(Color.rgb(139, 0, 0))
-                            binding.personOneBalance.text = "You owe them ${String.format("%.2f", totalOwed)}"
+                            binding.personOneBalance.text = "You owe them $${String.format("%.2f", totalOwed)}"
                         } else {
                             binding.personOneBalance.setTextColor(Color.rgb( 1,  150,  32))
-                            binding.personOneBalance.text = "They owe you ${String.format("%.2f", abs(totalOwed))}"
+                            binding.personOneBalance.text = "They owe you $${String.format("%.2f", abs(totalOwed))}"
                         }
                         val totalOwedTwo = it[apt.roomates[1]]
-                        if (totalOwedTwo!! >= 0.0) {
+                        if (totalOwedTwo!! > 0.0) {
                             binding.personTwoBalance.setTextColor(Color.rgb(139, 0, 0))
-                            binding.personTwoBalance.text = "You owe them ${String.format("%.2f", totalOwedTwo)}"
+                            binding.personTwoBalance.text = "You owe them $${String.format("%.2f", totalOwedTwo)}"
                         } else {
                             binding.personTwoBalance.setTextColor(Color.rgb( 1,  150,  32))
-                            binding.personTwoBalance.text = "They owe you ${String.format("%.2f", abs(totalOwedTwo))}"
+                            binding.personTwoBalance.text = "They owe you $${String.format("%.2f", abs(totalOwedTwo))}"
                         }
                     }
 
@@ -165,7 +170,7 @@ class PaymentsFragment : Fragment() {
                     }
                     dataViewModel.observeTotal().observe(viewLifecycleOwner) {
                         val totalOwed = it[apt.roomates[0]]
-                        if (totalOwed!! >= 0.0) {
+                        if (totalOwed!! > 0.0) {
                             binding.personOneBalance.setTextColor(Color.rgb(139, 0, 0))
                             binding.personOneBalance.text = "You owe them ${String.format("%.2f", totalOwed)}"
                         } else {
@@ -173,7 +178,7 @@ class PaymentsFragment : Fragment() {
                             binding.personOneBalance.text = "They owe you ${String.format("%.2f", abs(totalOwed))}"
                         }
                         val totalOwedTwo = it[apt.roomates[1]]
-                        if (totalOwedTwo!! >= 0.0) {
+                        if (totalOwedTwo!! > 0.0) {
                             binding.personTwoBalance.setTextColor(Color.rgb(139, 0, 0))
                             binding.personTwoBalance.text = "You owe them ${String.format("%.2f", totalOwedTwo)}"
                         } else {
@@ -181,7 +186,7 @@ class PaymentsFragment : Fragment() {
                             binding.personTwoBalance.text = "They owe you ${String.format("%.2f", abs(totalOwedTwo))}"
                         }
                         val totalOwedThree = it[apt.roomates[2]]
-                        if (totalOwedThree!! >= 0.0) {
+                        if (totalOwedThree!! > 0.0) {
                             binding.personThreeBalance.setTextColor(Color.rgb(139, 0, 0))
                             binding.personThreeBalance.text = "You owe them ${String.format("%.2f", totalOwedThree)}"
                         } else {
@@ -213,7 +218,7 @@ class PaymentsFragment : Fragment() {
                     }
                     dataViewModel.observeTotal().observe(viewLifecycleOwner) {
                         val totalOwed = it[apt.roomates[0]]
-                        if (totalOwed!! >= 0.0) {
+                        if (totalOwed!! > 0.0) {
                             binding.personOneBalance.setTextColor(Color.rgb(139, 0, 0))
                             binding.personOneBalance.text = "You owe them ${String.format("%.2f", totalOwed)}"
                         } else {
@@ -221,7 +226,7 @@ class PaymentsFragment : Fragment() {
                             binding.personOneBalance.text = "They owe you ${String.format("%.2f", abs(totalOwed))}"
                         }
                         val totalOwedTwo = it[apt.roomates[1]]
-                        if (totalOwedTwo!! >= 0.0) {
+                        if (totalOwedTwo!! > 0.0) {
                             binding.personTwoBalance.setTextColor(Color.rgb(139, 0, 0))
                             binding.personTwoBalance.text = "You owe them ${String.format("%.2f", totalOwedTwo)}"
                         } else {
@@ -229,7 +234,7 @@ class PaymentsFragment : Fragment() {
                             binding.personTwoBalance.text = "They owe you ${String.format("%.2f", abs(totalOwedTwo))}"
                         }
                         val totalOwedThree = it[apt.roomates[2]]
-                        if (totalOwedThree!! >= 0.0) {
+                        if (totalOwedThree!! > 0.0) {
                             binding.personThreeBalance.setTextColor(Color.rgb(139, 0, 0))
                             binding.personThreeBalance.text = "You owe them ${String.format("%.2f", totalOwedThree)}"
                         } else {
@@ -237,7 +242,7 @@ class PaymentsFragment : Fragment() {
                             binding.personThreeBalance.text = "They owe you ${String.format("%.2f", abs(totalOwedThree))}"
                         }
                         val totalOwedFour = it[apt.roomates[3]]
-                        if (totalOwedFour!! >= 0.0) {
+                        if (totalOwedFour!! > 0.0) {
                             binding.personFourBalance.setTextColor(Color.rgb(139, 0, 0))
                             binding.personFourBalance.text = "You owe them ${String.format("%.2f", totalOwedFour)}"
                         } else {
