@@ -10,11 +10,10 @@ import com.example.sharedhouse.databinding.FeedViewBinding
 import com.example.sharedhouse.db.MainViewModel
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.sharedhouse.models.PurchasedItem
 
+//Displays the feed of recently completed purchases and expenses.
 class FeedViewFragment : Fragment() {
     companion object {
         val TAG : String = "SelectFragment"
@@ -45,18 +44,15 @@ class FeedViewFragment : Fragment() {
         rv.layoutManager = LinearLayoutManager(rv.context)
 
         binding.swipeRefreshLayout.setOnRefreshListener {
-            //TODO: add call to VM
             viewModel.updatePurchasedItems()
             binding.swipeRefreshLayout.isRefreshing = false
         }
         viewModel.observeCurrentApartment().observe(viewLifecycleOwner) {
-            Log.d("FeedViewFragment", "Current apartment: $it")
             viewModel.updatePurchasedItems()
 
         }
 
         viewModel.observePurchasedItems().observe(viewLifecycleOwner) {
-            Log.d("FeedViewFragment", "Purchased items observed: $it")
             val list = it
             adapter.submitList(it)
             viewModel.observeAllRoomates().observe(viewLifecycleOwner) {

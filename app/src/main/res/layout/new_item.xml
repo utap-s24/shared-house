@@ -10,7 +10,7 @@
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add a new item"
+        android:text="Add a new purchase"
         android:textSize="24sp"
         android:textColor="@android:color/black"
         android:layout_marginBottom="16dp"/>
@@ -56,13 +56,13 @@
         <EditText
             android:id="@+id/quantityTextField"
             android:layout_width="0dp"
+            android:inputType="number"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Enter quantity"
+            android:hint="1000"
             android:textSize="18sp"/>
     </LinearLayout>
 
-    <!-- Subtitle TextView -->
     <TextView
         android:id="@+id/subtitleTextView"
         android:layout_width="wrap_content"
@@ -73,7 +73,6 @@
         android:layout_marginTop="24dp"
         android:layout_marginBottom="8dp"/>
 
-    <!-- Linear Layout with TextView and CheckBox -->
     <LinearLayout
         android:id="@+id/layoutOne"
         android:layout_width="match_parent"
@@ -96,7 +95,6 @@
             android:textSize="18sp"/>
     </LinearLayout>
 
-    <!-- Linear Layout with TextView and CheckBox -->
     <LinearLayout
         android:id="@+id/layoutTwo"
         android:layout_width="match_parent"
@@ -120,7 +118,6 @@
             android:textSize="18sp"/>
     </LinearLayout>
 
-    <!-- Linear Layout with TextView and CheckBox -->
     <LinearLayout
         android:id="@+id/layoutThree"
         android:layout_width="match_parent"
@@ -188,8 +185,6 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"/>
     </LinearLayout>
-
-
 
     <!-- Button at the bottom -->
     <Button

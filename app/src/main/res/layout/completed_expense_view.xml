@@ -10,7 +10,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="16dp">
-        <!-- Title TextView -->
         <TextView
             android:id="@+id/titleTextView"
             android:layout_width="wrap_content"

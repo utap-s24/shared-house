@@ -1,10 +1,10 @@
 package com.example.sharedhouse.models
 
-import androidx.lifecycle.MutableLiveData
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.ServerTimestamp
 
+//Defines the apartment as per Firebase
 data class Apartment (
     var name: String = "",
     var roomates: List<String> = emptyList(),

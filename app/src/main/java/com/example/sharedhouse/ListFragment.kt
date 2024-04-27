@@ -1,7 +1,6 @@
 package com.example.sharedhouse
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.sharedhouse.databinding.ItemsListBinding
 import com.example.sharedhouse.db.MainViewModel
 
+
+//Displays items yet to be purchased.
 class ListFragment : Fragment() {
     // https://developer.android.com/topic/libraries/view-binding#fragments
     private var _binding: ItemsListBinding? = null
@@ -28,7 +29,6 @@ class ListFragment : Fragment() {
     ): View {
         _binding = ItemsListBinding.inflate(inflater, container, false)
         val root: View = binding.root
-//        Log.d("FavoritesFragment", "onCreateView ${viewModel.selected}")
         return root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,7 +39,6 @@ class ListFragment : Fragment() {
         }
 
         binding.swipeRefreshLayout.setOnRefreshListener {
-            //TODO: add call to VM
             viewModel.updateUnpurchasedItems()
             binding.swipeRefreshLayout.isRefreshing = false
         }
@@ -51,7 +50,6 @@ class ListFragment : Fragment() {
         rv.adapter = adapter
         rv.layoutManager = LinearLayoutManager(rv.context)
         viewModel.observeCurrentApartment().observe(viewLifecycleOwner) {
-            Log.d("ListFragment", "Current apartment: $it")
             viewModel.updateUnpurchasedItems()
         }
         viewModel.observeUnpurchasedItems().observe(viewLifecycleOwner) {

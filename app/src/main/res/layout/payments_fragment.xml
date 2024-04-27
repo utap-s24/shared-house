@@ -10,8 +10,6 @@
             android:orientation="vertical"
             android:padding="16dp"
             android:id="@+id/linear">
-
-                <!-- First TextView -->
                 <TextView
                     android:id="@+id/net_balance_label"
                     android:layout_width="wrap_content"
@@ -21,21 +19,20 @@
                     android:textColor="@android:color/black"
                     android:textSize="18sp" />
 
-                <!-- Second TextView -->
                 <TextView
                     android:id="@+id/net_balance_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Second TextView"
+                    android:text="How much owed..."
                     android:textSize="18sp"
                     android:textColor="@android:color/black"
                     android:layout_marginBottom="8dp"/>
 
-                <!-- First LinearLayout with two TextViews -->
                 <LinearLayout
                     android:id="@+id/layoutOne"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:orientation="horizontal">
 
                         <TextView
@@ -57,10 +54,9 @@
                             android:textColor="@android:color/black"/>
                 </LinearLayout>
 
-                <!-- Second LinearLayout with two TextViews -->
                 <LinearLayout
                     android:id="@+id/layoutTwo"
-
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -89,7 +85,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:visibility="invisible">
+                    android:visibility="gone">
 
                         <TextView
                             android:id="@+id/person_three"
@@ -115,7 +111,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:visibility="invisible">
+                    android:visibility="gone">
 
                         <TextView
                             android:id="@+id/person_four"
@@ -136,9 +132,6 @@
                             android:textColor="@android:color/black"/>
                 </LinearLayout>
 
-
-
-                <!-- Button at the bottom -->
                 <Button
                     android:layout_width="150dp"
                     android:layout_gravity="center"

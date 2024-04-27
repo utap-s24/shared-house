@@ -25,11 +25,6 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
     </fragment>
     <fragment
-        android:id="@+id/settingsFragment"
-        tools:layout="@layout/settings"
-        android:name="com.example.sharedhouse.SettingsFragment"
-        android:label="Settings" />
-    <fragment
         android:id="@+id/addExpenseFragment"
         android:name="com.example.sharedhouse.AddExpenseFragment"
         android:label="New Expense"

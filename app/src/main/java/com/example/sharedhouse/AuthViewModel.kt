@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 
+//Based on flipped classroom
 class AuthViewModel : ViewModel() {
     private var displayName = MutableLiveData("Uninitialized")
     private var email = MutableLiveData("Uninitialized")
@@ -18,7 +19,6 @@ class AuthViewModel : ViewModel() {
     }
 
     fun updateUser() {
-        // XXX Write me. Update user data in view model
         val currentUser = FirebaseAuth.getInstance().currentUser
 
         if (currentUser != null) {

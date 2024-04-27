@@ -7,9 +7,11 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.sharedhouse.databinding.AddExpenseBinding
 import com.example.sharedhouse.db.MainViewModel
 import com.example.sharedhouse.models.PurchasedItem
@@ -159,7 +161,6 @@ class AddExpenseFragment : Fragment() {
                             amount *= 1.0625
                         }
 
-
                         val map = HashMap<String, Boolean>()
                         for (id in sharedWith){
                             map[id] = false
@@ -178,26 +179,17 @@ class AddExpenseFragment : Fragment() {
                         )
 
                         viewModel.addPurchasedExpense(expenseToAdd)
-
+                        findNavController().popBackStack()
+                    } else {
+                        Toast.makeText(context, "Must be shared with at least one person.", Toast.LENGTH_LONG)
+                        return@setOnClickListener
                     }
+                } else {
+                    Toast.makeText(context, "Ensure that the expense and amount are entered.", Toast.LENGTH_LONG)
+                    return@setOnClickListener
                 }
             }
         }
-
-        binding.submitButton.setOnClickListener {
-            if (binding.expenseText.text.isNotEmpty() && binding.amountText.text.isNotEmpty()) {
-                val title = binding.expenseText.text
-                var amount = binding.amountText.text.toString().toDouble()
-                if (binding.taxCheckbox.isChecked) {
-                    amount *= 106.25
-                }
-
-                //TODO: Call to viewmodel
-            }
-        }
-
-
-
     }
 
     override fun onDestroyView() {

@@ -1,6 +1,5 @@
 package com.example.sharedhouse.db
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.sharedhouse.models.Apartment
@@ -34,19 +33,19 @@ class MainViewModel : ViewModel() {
 
     fun observeTotal() = total
 
-
+    //Get all purchased items
     fun updatePurchasedItems() {
-        FirestoreService().dbFetchAllPurchasedExpenses(purchasedItems, curApartment.value!!.firestoreID) {
-//            calculateTotals()
-        }
+        FirestoreService().dbFetchAllPurchasedExpenses(purchasedItems, curApartment.value!!.firestoreID) {}
 
     }
 
+    //Get all unpurchased items
     fun updateUnpurchasedItems() {
         FirestoreService().dbFetchAllUnpurchasedExpenses(unpurchasedItems, curApartment.value!!.firestoreID)
 
     }
 
+    //Adding a new item to the unpurchased expenses
     fun addUnpurchasedExpense(unpurchasedExpense: UnpurchasedExpense) {
         FirestoreService().dbAddUnpurchasedExpense(unpurchasedExpense, curApartment.value!!.firestoreID)
     }
@@ -55,7 +54,6 @@ class MainViewModel : ViewModel() {
         FirestoreService().dbAddNewApartment(apartmentId, FirebaseAuth.getInstance().currentUser!!) {
             updateCurrentApartment()
         }
-
     }
 
     fun addUserToExistingApartment(apartmentId: String) {
@@ -88,7 +86,7 @@ class MainViewModel : ViewModel() {
     }
 
     fun addPurchasedItem(unpurchasedExpense: UnpurchasedExpense, amount: Double, comment: String) {
-
+        //Create our map of id to comment.
         var commentList = ArrayList<HashMap<String, String>>()
         var map = HashMap<String, String>()
         map["name"] = FirebaseAuth.getInstance().currentUser!!.displayName!!
@@ -98,28 +96,16 @@ class MainViewModel : ViewModel() {
         }
 
         FirestoreService().doMoveFromUnpurchasedToPurchased(unpurchasedExpense, amount, commentList, curApartment.value!!.firestoreID, FirebaseAuth.getInstance().currentUser!!){
-
             val createdPurchaseItem = it
             val updatedApartment = curApartment.value?.apply {
-                // Update fields in the apartment as necessary
-                // For example, you might want to remove the expense from a list of unpurchased expenses
+                // Update fields in the apartment
                 this.unpurchasedExpenses.remove(unpurchasedExpense)
                 this.purchasedItems.add(createdPurchaseItem)
-                // If you have a list of purchased expenses, you might want to add it there, and so on
             }
             // Post the updated value to the MutableLiveData
             curApartment.postValue(updatedApartment!!)
-//            calculateTotals()
         }
-//
 
-    }
-
-    fun updateAllApartmentExpenses() {
-        FirestoreService().dbUpdateAllApartmentExpenses(curApartment.value!!.firestoreID) {
-            val updatedApartment = it
-            curApartment.postValue(updatedApartment)
-        }
     }
 
 
@@ -143,7 +129,6 @@ class MainViewModel : ViewModel() {
         map[FirebaseAuth.getInstance().currentUser!!.uid] = true
         purchasedItem.hasPaid = map
 
-
         FirestoreService().dbChangeHasPaidValue(purchasedItem, curApartment.value!!.firestoreID, ){
             updatePurchasedItems()
         }
@@ -152,6 +137,7 @@ class MainViewModel : ViewModel() {
 
     fun calculateTotals() {
         var curUserId = FirebaseAuth.getInstance().currentUser!!.uid
+        //Create map joining roommate ids to initial balance of 0
         var mapOfIdToOwed = HashMap<String, Double>()
         for (id in allRoomates.value!!.keys) {
             mapOfIdToOwed[id] = 0.0
@@ -159,10 +145,13 @@ class MainViewModel : ViewModel() {
         for (purchasedItem in purchasedItems.value!!) {
             for (id in purchasedItem.hasPaid.keys) {
                 if (purchasedItem.hasPaid[id] == false) {
+                    //Only handling cases where someone owes something
                     if(purchasedItem.purchasedBy == curUserId) {
+                        //The current user is owned by the specified user id
                         mapOfIdToOwed[id] = mapOfIdToOwed[id]!! - purchasedItem.price / purchasedItem.hasPaid.size
                     }
                     else if (id == curUserId) {
+                        //The current user owes the purchaser
                         mapOfIdToOwed[purchasedItem.purchasedBy] = mapOfIdToOwed[purchasedItem.purchasedBy]!! + purchasedItem.price / purchasedItem.hasPaid.size
                     }
 
@@ -171,18 +160,14 @@ class MainViewModel : ViewModel() {
 
         }
 
+        //Find net balance of the user.
         var netSum = 0.0
         for (id in mapOfIdToOwed.keys) {
             netSum += mapOfIdToOwed[id]!!
         }
         mapOfIdToOwed[curUserId] = netSum
-
         total.postValue(mapOfIdToOwed)
-
-//        total.postValue(total.value)
     }
-
-
 
     fun getItemMeta(position: Int) : UnpurchasedExpense {
         val item = unpurchasedItems.value?.get(position)

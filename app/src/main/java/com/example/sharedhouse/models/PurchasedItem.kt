@@ -4,6 +4,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.ServerTimestamp
 
+//Any competed purchase item.
 data class PurchasedItem(
     var name: String = "",
     var price: Double = 0.0,

@@ -1,9 +1,11 @@
 package com.example.sharedhouse
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.MeasureSpec
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -11,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.sharedhouse.databinding.CompletedExpenseViewBinding
 import com.example.sharedhouse.databinding.ItemsListBinding
 import com.example.sharedhouse.db.MainViewModel
@@ -94,9 +97,6 @@ class CompletedExpenseViewFragment : Fragment() {
             }
         }
 
-
-
-
         binding.addComment.setOnClickListener {
             if (binding.commentsTextField.text.isNotEmpty()) {
                 //We have a comment to add
@@ -110,21 +110,22 @@ class CompletedExpenseViewFragment : Fragment() {
             binding.swipeRefreshLayout.isRefreshing = false
         }
 
-        val adapter = CompletedExpenseViewAdapter(viewModel, findNavController(), currentPurchasedExpense.comments)
+        val adapter = CompletedExpenseViewAdapter(currentPurchasedExpense.comments)
         val rv = binding.recyclerView
         rv.adapter = adapter
-        rv.layoutManager = LinearLayoutManager(rv.context)
+        rv.layoutManager = LinearLayoutManager(rv.context, LinearLayoutManager.VERTICAL, false)
+//        rv.layoutParams = Linear.LayoutParams(
+//            RecyclerView.LayoutParams.WRAP_CONTENT,
+//            RecyclerView.LayoutParams.WRAP_CONTENT
+//        )
         adapter.submitList(currentPurchasedExpense.comments)
 
         viewModel.observePurchasedItems().observe(viewLifecycleOwner) {
-            val newAdapter =  CompletedExpenseViewAdapter(viewModel, findNavController(), it[index].comments)
+            val newAdapter =  CompletedExpenseViewAdapter(it[index].comments)
             binding.recyclerView.adapter = newAdapter
             newAdapter.submitList(it[index].comments)
             Log.d("CompletedExpenseView", "submitting list ${currentPurchasedExpense.comments}")
         }
-
-
-
     }
 
     override fun onDestroyView() {
@@ -132,3 +133,5 @@ class CompletedExpenseViewFragment : Fragment() {
         _binding = null
     }
 }
+
+

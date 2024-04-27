@@ -1,20 +1,18 @@
 package com.example.sharedhouse
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.MenuProvider
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.example.sharedhouse.databinding.NewItemBinding
 import com.example.sharedhouse.db.MainViewModel
 import com.example.sharedhouse.models.UnpurchasedExpense
 
+// Creating a new item to add to unpurchased items.
 class NewItemFragment : Fragment() {
     // https://developer.android.com/topic/libraries/view-binding#fragments
     private var _binding: NewItemBinding? = null
@@ -43,8 +41,7 @@ class NewItemFragment : Fragment() {
             roommateCount = it.roomates.size
             var apt = it
 
-
-
+            //Conditionally displaying checkboxes
             when (roommateCount) {
                 0 -> {
                     binding.layoutOne.visibility = View.GONE
@@ -148,7 +145,6 @@ class NewItemFragment : Fragment() {
                         || binding.roommateCheckboxFour.isChecked
                     ) {
                         // Valid setup of item details.
-                        //TODO: Call viewmodel function here
                         viewModel.addUnpurchasedExpense(
                             UnpurchasedExpense(
                                 binding.itemTextField.text.toString(),
@@ -156,10 +152,15 @@ class NewItemFragment : Fragment() {
                                 binding.quantityTextField.text.toString().toInt(),
                             )
                         )
+
+                        findNavController().popBackStack()
                     } else {
-                        binding.meCheckbox.error = "Select at least one roommate"
+                        Toast.makeText(context, "Must be shared with at least one person.", Toast.LENGTH_LONG)
                         return@setOnClickListener
                     }
+                } else {
+                    Toast.makeText(context, "Ensure that the item name and quantity are entered.", Toast.LENGTH_LONG)
+                    return@setOnClickListener
                 }
             }
         }

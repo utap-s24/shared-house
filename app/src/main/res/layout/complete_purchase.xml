@@ -62,7 +62,6 @@
             android:textSize="18sp"/>
     </LinearLayout>
 
-    <!-- Linear Layout with TextView and CheckBox -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -108,19 +107,6 @@
             android:textSize="18sp"/>
     </LinearLayout>
 
-    <!-- Button at the bottom -->
-    <Button
-        android:id="@+id/pictureButton"
-        android:layout_width="200dp"
-        android:layout_gravity="center"
-        android:layout_height="wrap_content"
-        android:text="Take a Photo"
-        android:textSize="20sp"
-        android:visibility="invisible"
-        android:enabled="false"
-        android:layout_marginTop="16dp"/>
-
-    <!-- Button at the bottom -->
     <Button
         android:id="@+id/submitButton"
         android:layout_width="150dp"

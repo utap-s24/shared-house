@@ -1,8 +1,6 @@
 package com.example.sharedhouse
 
-import android.media.MediaPlayer
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +9,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.sharedhouse.databinding.ApartmentViewBinding
-import com.example.sharedhouse.databinding.FeedViewBinding
-import com.example.sharedhouse.databinding.ProfileViewBinding
 import com.example.sharedhouse.db.MainViewModel
-import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 
 class ApartmentListFragment : Fragment() {
     companion object {
@@ -38,11 +32,11 @@ class ApartmentListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val joinClickListener: (id: String) -> Unit = { id ->
-            //Visual elements
             dataViewModel.addUserToExistingApartment(id)
+            findNavController().popBackStack()
         }
 
-        val adapter = ApartmentListAdapter(viewModel = dataViewModel, joinClickListener)
+        val adapter = ApartmentListAdapter(viewModel = dataViewModel, requireContext(), joinClickListener)
         val rv = binding.recyclerView
         val itemDecor = DividerItemDecoration(rv.context, LinearLayoutManager.VERTICAL)
         rv.addItemDecoration(itemDecor)
@@ -50,23 +44,19 @@ class ApartmentListFragment : Fragment() {
         rv.layoutManager = LinearLayoutManager(rv.context)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         dataViewModel.getAllApartments()
-//        adapter = ApartmentListAdapter(dataViewModel, joinClickListener)
         dataViewModel.observeAllApartments().observe (viewLifecycleOwner){
             adapter.submitList(it)
         }
-//
-//        binding.recyclerView.adapter = adapter
-//        initRecyclerViewDividers(binding.recyclerView)
         binding.buttonCreate.setOnClickListener {
             dataViewModel.addNewApartment(binding.newApartmentName.text.toString())
+            findNavController().popBackStack()
         }
     }
 
-    private fun initRecyclerViewDividers(rv: RecyclerView) {
-        // Let's have dividers between list items
-        val dividerItemDecoration = DividerItemDecoration(
-            rv.context, LinearLayoutManager.VERTICAL
-        )
-        rv.addItemDecoration(dividerItemDecoration)
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
+
 }

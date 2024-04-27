@@ -2,14 +2,12 @@ package com.example.sharedhouse
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.sharedhouse.databinding.PaymentsFragmentBinding
 import com.example.sharedhouse.db.MainViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -43,7 +41,6 @@ class PaymentsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //EEE // XXX Write me, action bar title,
         binding.addExpense.setOnClickListener {
             findNavController().navigate(R.id.addExpenseFragment)
         }
@@ -58,10 +55,7 @@ class PaymentsFragment : Fragment() {
             if (it != "Uninitialized") {
                 dataViewModel.updateCurrentApartment()
             }
-
-
         }
-
 
         dataViewModel.observePurchasedItems().observe(viewLifecycleOwner) {
             dataViewModel.calculateTotals()
@@ -79,13 +73,12 @@ class PaymentsFragment : Fragment() {
             }
         }
 
-
-
         var roommateCount = 0
         dataViewModel.observeCurrentApartment().observe(viewLifecycleOwner) {
             dataViewModel.getAllRoomates()
             roommateCount = it.roomates.size - 1
             var apt = it
+            //Conditionally displaying checkboxes
             when (roommateCount) {
                 0 -> {
                     binding.layoutOne.visibility = View.GONE
@@ -97,7 +90,6 @@ class PaymentsFragment : Fragment() {
                     binding.layoutThree.isEnabled = false
                     binding.layoutFour.isEnabled = false
                 }
-
                 1 -> {
                     binding.layoutOne.visibility = View.VISIBLE
                     binding.layoutTwo.visibility = View.GONE
@@ -122,7 +114,6 @@ class PaymentsFragment : Fragment() {
                         }
                     }
                 }
-
                 2 -> {
                     binding.layoutOne.visibility = View.VISIBLE
                     binding.layoutTwo.visibility = View.VISIBLE
@@ -138,7 +129,6 @@ class PaymentsFragment : Fragment() {
                         binding.personOne.text = it[apt.roomates[0]]
                         binding.personTwo.text = it[apt.roomates[1]]
                     }
-
                     dataViewModel.observeTotal().observe(viewLifecycleOwner) {
                         val totalOwed = it[apt.roomates[0]]
                         if (totalOwed!! > 0.0) {
