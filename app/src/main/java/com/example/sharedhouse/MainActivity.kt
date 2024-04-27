@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        AuthInit(authViewModel, signInLauncher)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initMenu()
@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-        AuthInit(authViewModel, signInLauncher)
+
     }
     // navigateUp:
     // If we came here from within the app, pop the back stack

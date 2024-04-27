@@ -26,6 +26,7 @@ class PaymentsFragment : Fragment() {
     private val binding get() = _binding!!
     private val dataViewModel: MainViewModel by activityViewModels()
     private val sharedWith = mutableListOf<String>()
+    private val authViewModel: AuthViewModel by activityViewModels()
 
 
     override fun onCreateView(
@@ -52,7 +53,10 @@ class PaymentsFragment : Fragment() {
             binding.swipeRefreshLayout.isRefreshing = false
         }
 
-        binding.netBalanceLabel.text = "${FirebaseAuth.getInstance().currentUser!!.displayName}'s Net Balance"
+        authViewModel.observeDisplayName().observe(viewLifecycleOwner) {
+            binding.netBalanceLabel.text = "$it's Net Balance"
+        }
+
 
         dataViewModel.observePurchasedItems().observe(viewLifecycleOwner) {
             dataViewModel.calculateTotals()
