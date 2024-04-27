@@ -77,8 +77,8 @@
         android:label="CompletedExpenseViewFragment"
         tools:layout="@layout/completed_expense_view">
         <argument
-            android:name="id"
-            app:argType="string"
+            android:name="index"
+            app:argType="integer"
         />
     </fragment>
 </navigation>
