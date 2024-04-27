@@ -1,17 +1,17 @@
 package com.example.sharedhouse
 
-import android.graphics.Color
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sharedhouse.databinding.RowApartmentBinding
-import com.example.sharedhouse.databinding.RowItemBinding
 import com.example.sharedhouse.db.MainViewModel
 import com.example.sharedhouse.models.Apartment
 
-class ApartmentListAdapter(private val viewModel: MainViewModel,
+class ApartmentListAdapter(private val viewModel: MainViewModel, private val context: Context,
                            private val clickListener: (index : String)->Unit): ListAdapter<Apartment,
         ApartmentListAdapter.ViewHolder>(Diff()) {
     class Diff : DiffUtil.ItemCallback<Apartment>() {
@@ -33,14 +33,17 @@ class ApartmentListAdapter(private val viewModel: MainViewModel,
             val apartment = viewModel.getApartmentMeta(position)
             holder.rowBinding.apartmentName.text = apartment.name
             rowBinding.joinButton.setOnClickListener {
-                clickListener(apartment.firestoreID)
+                if (apartment.roomates.size > 4) {
+                    Toast.makeText(context, "This apartment is full!", Toast.LENGTH_LONG)
+                } else {
+                    clickListener(apartment.firestoreID)
+                }
             }
 
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        //XXX Write me.
         val rowBinding = RowApartmentBinding.inflate(
             LayoutInflater.from(parent.context),
             parent, false)

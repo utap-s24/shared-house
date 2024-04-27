@@ -15,6 +15,28 @@
         android:textColor="@android:color/black"
         android:layout_marginBottom="16dp"/>
 
+    <LinearLayout
+        android:layout_marginBottom="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/sharedWithLabel"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:text="Shared With:"
+            android:textSize="20sp"
+            android:textColor="@android:color/black"
+
+            android:layout_marginEnd="10dp"/>
+        <TextView
+            android:id="@+id/sharedWithTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Names Names Names Names"
+            android:textSize="20sp"
+            android:textColor="@android:color/black"/>
+    </LinearLayout>
+
     <!-- Linear Layout with TextView and EditText -->
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,7 +62,6 @@
             android:textSize="18sp"/>
     </LinearLayout>
 
-    <!-- Linear Layout with TextView and CheckBox -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -86,19 +107,6 @@
             android:textSize="18sp"/>
     </LinearLayout>
 
-    <!-- Button at the bottom -->
-    <Button
-        android:id="@+id/pictureButton"
-        android:layout_width="200dp"
-        android:layout_gravity="center"
-        android:layout_height="wrap_content"
-        android:text="Take a Photo"
-        android:textSize="20sp"
-        android:visibility="invisible"
-        android:enabled="false"
-        android:layout_marginTop="16dp"/>
-
-    <!-- Button at the bottom -->
     <Button
         android:id="@+id/submitButton"
         android:layout_width="150dp"

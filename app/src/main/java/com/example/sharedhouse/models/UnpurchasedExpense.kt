@@ -4,6 +4,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.ServerTimestamp
 
+//Defines yet-to-be-completed expenses
 data class UnpurchasedExpense(
     var itemName: String = "",
     var sharedWith: List<String> = emptyList(),

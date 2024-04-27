@@ -15,7 +15,6 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.sharedhouse.databinding.ActivityMainBinding
-import com.example.sharedhouse.R
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 
 class MainActivity : AppCompatActivity() {
@@ -35,21 +34,13 @@ class MainActivity : AppCompatActivity() {
                 menuInflater.inflate(R.menu.main_menu, menu)
             }
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                // This could be replaced with return false, but I wanted to show
-                // the usual structure for a menu item
-                return when (menuItem.itemId) {
-                    R.id.action_settings -> {
-                        navController.navigate(R.id.settingsFragment)
-                        true
-                    }
-                    else -> false
-                }
+                return false
             }
         })
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        AuthInit(authViewModel, signInLauncher)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initMenu()
@@ -66,7 +57,7 @@ class MainActivity : AppCompatActivity() {
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-        AuthInit(authViewModel, signInLauncher)
+
     }
     // navigateUp:
     // If we came here from within the app, pop the back stack

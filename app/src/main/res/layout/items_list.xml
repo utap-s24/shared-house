@@ -15,7 +15,6 @@
             android:layout_weight="1"
             android:padding="8dp"/>
 
-        <!-- Button at the bottom -->
         <Button
             android:layout_width="150dp"
             android:layout_gravity="center"

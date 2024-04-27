@@ -1,6 +1,7 @@
 package com.example.sharedhouse
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import com.example.sharedhouse.databinding.ProfileViewBinding
 import com.example.sharedhouse.db.MainViewModel
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 
+//Profile. Can sign out or join an apartment (if not in one)
 class ProfileFragment : Fragment() {
     companion object {
         val TAG : String = ProfileFragment::class.java.simpleName

@@ -22,13 +22,12 @@ class ItemListAdapter(private val viewModel: MainViewModel, private val navContr
             if (oldItem.sharedWith.size != newItem.sharedWith.size) {
                 return false
             }
-            // Check if each element in list1 exists in list2
             for (element in oldItem.sharedWith) {
                 if (element !in newItem.sharedWith) {
                     return false
                 }
             }
-            // Check if each element in list2 exists in list1
+
             for (element in oldItem.sharedWith) {
                 if (element !in newItem.sharedWith) {
                     return false
