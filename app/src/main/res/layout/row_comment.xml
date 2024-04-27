@@ -1,27 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/layout"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="left"
-    android:layout_margin="5dp"
-    android:background="@drawable/border"
     android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/layout"
+        android:layout_margin="5dp"
+        android:background="@drawable/border_different"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="start"
+        >
     <TextView
         android:id="@+id/comment"
-        android:layout_width="300dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_weight="1"
-        android:gravity="center_vertical"
-        android:text="Lorem ipsum dolor sit amet, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla"
+        android:gravity="end"
+        android:text="Lorem"
         android:textColor="@android:color/black"
         android:textSize="18sp" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
@@ -43,11 +48,14 @@
             android:id="@+id/commenter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="4dp"
             android:gravity="center_vertical"
             android:text="Purchaser"
             android:textColor="@android:color/black"
             android:textSize="14sp" />
     </LinearLayout>
+
+</LinearLayout>
+
 </LinearLayout>
 

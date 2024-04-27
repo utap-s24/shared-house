@@ -102,6 +102,8 @@ class CompletedExpenseViewFragment : Fragment() {
                 //We have a comment to add
                 viewModel.addCommentToPurchasedItem(currentPurchasedExpense, binding.commentsTextField.text.toString())
                 binding.commentsTextField.text.clear()
+            } else {
+                binding.commentsTextField.error = "Please enter a comment."
             }
         }
 
@@ -114,10 +116,6 @@ class CompletedExpenseViewFragment : Fragment() {
         val rv = binding.recyclerView
         rv.adapter = adapter
         rv.layoutManager = LinearLayoutManager(rv.context, LinearLayoutManager.VERTICAL, false)
-//        rv.layoutParams = Linear.LayoutParams(
-//            RecyclerView.LayoutParams.WRAP_CONTENT,
-//            RecyclerView.LayoutParams.WRAP_CONTENT
-//        )
         adapter.submitList(currentPurchasedExpense.comments)
 
         viewModel.observePurchasedItems().observe(viewLifecycleOwner) {
