@@ -48,6 +48,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="Quantity:"
+            android:inputType="number"
             android:textSize="18sp"
             android:textColor="@android:color/black"
             android:layout_marginEnd="8dp"/>
@@ -90,7 +91,7 @@
 
         <CheckBox
             android:id="@+id/me_checkbox"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:textSize="18sp"/>
     </LinearLayout>
@@ -114,7 +115,7 @@
 
         <CheckBox
             android:id="@+id/roommate_checkbox_one"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:textSize="18sp"/>
     </LinearLayout>
@@ -138,7 +139,7 @@
 
         <CheckBox
             android:id="@+id/roommate_checkbox_two"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:textSize="18sp"/>
     </LinearLayout>
@@ -161,7 +162,7 @@
 
         <CheckBox
             android:id="@+id/roommate_checkbox_three"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:textSize="18sp"/>
     </LinearLayout>
@@ -183,7 +184,7 @@
 
         <CheckBox
             android:id="@+id/roommate_checkbox_four"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:textSize="18sp"/>
     </LinearLayout>

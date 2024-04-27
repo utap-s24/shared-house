@@ -45,6 +45,21 @@ class CompletePurchaseFragment : Fragment() {
 
         //TODO: get data based on firebaseID
 
+        binding.titleTextView.text = "Complete purchase for: ${currentUnpurchasedExpense.itemName}"
+        binding.priceTextField.hint = "Price for ${currentUnpurchasedExpense.itemName}"
+        viewModel.observeAllRoomates().observe(viewLifecycleOwner) {
+            Log.d("CompletedExpenseView", "the map from id to name : $it")
+            var names = ""
+            for (sharedId in currentUnpurchasedExpense.sharedWith) {
+                if (it.containsKey(sharedId)) {
+                    names += "${it[sharedId]}, "
+
+                }
+            }
+            Log.d("CompletedExpenseView", "names: ${names}")
+            names = names.substring(0, names.length - 2)
+            binding.sharedWithTextView.text = names
+        }
         binding.submitButton.setOnClickListener {
             if (binding.priceTextField.text.isNotEmpty()) {
                 //Valid

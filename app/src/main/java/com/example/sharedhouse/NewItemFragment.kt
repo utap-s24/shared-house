@@ -37,8 +37,9 @@ class NewItemFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         var roommateCount = 0
-        viewModel.getAllRoomates()
         viewModel.observeCurrentApartment().observe(viewLifecycleOwner) {
+            viewModel.getAllRoomates()
+
             roommateCount = it.roomates.size
             var apt = it
 
@@ -46,10 +47,10 @@ class NewItemFragment : Fragment() {
 
             when (roommateCount) {
                 0 -> {
-                    binding.layoutOne.visibility = View.INVISIBLE
-                    binding.layoutTwo.visibility = View.INVISIBLE
-                    binding.layoutThree.visibility = View.INVISIBLE
-                    binding.layoutFour.visibility = View.INVISIBLE
+                    binding.layoutOne.visibility = View.GONE
+                    binding.layoutTwo.visibility = View.GONE
+                    binding.layoutThree.visibility = View.GONE
+                    binding.layoutFour.visibility = View.GONE
                     binding.layoutOne.isEnabled = false
                     binding.layoutTwo.isEnabled = false
                     binding.layoutThree.isEnabled = false
@@ -59,9 +60,9 @@ class NewItemFragment : Fragment() {
 
                 1 -> {
                     binding.layoutOne.visibility = View.VISIBLE
-                    binding.layoutTwo.visibility = View.INVISIBLE
-                    binding.layoutThree.visibility = View.INVISIBLE
-                    binding.layoutFour.visibility = View.INVISIBLE
+                    binding.layoutTwo.visibility = View.GONE
+                    binding.layoutThree.visibility = View.GONE
+                    binding.layoutFour.visibility = View.GONE
                     binding.layoutOne.isEnabled = true
                     binding.layoutTwo.isEnabled = false
                     binding.layoutThree.isEnabled = false
@@ -75,8 +76,8 @@ class NewItemFragment : Fragment() {
                 2 -> {
                     binding.layoutOne.visibility = View.VISIBLE
                     binding.layoutTwo.visibility = View.VISIBLE
-                    binding.layoutThree.visibility = View.INVISIBLE
-                    binding.layoutFour.visibility = View.INVISIBLE
+                    binding.layoutThree.visibility = View.GONE
+                    binding.layoutFour.visibility = View.GONE
                     binding.layoutOne.isEnabled = true
                     binding.layoutTwo.isEnabled = true
                     binding.layoutThree.isEnabled = false
@@ -94,7 +95,7 @@ class NewItemFragment : Fragment() {
                     binding.layoutOne.visibility = View.VISIBLE
                     binding.layoutTwo.visibility = View.VISIBLE
                     binding.layoutThree.visibility = View.VISIBLE
-                    binding.layoutFour.visibility = View.INVISIBLE
+                    binding.layoutFour.visibility = View.GONE
                     binding.layoutOne.isEnabled = true
                     binding.layoutTwo.isEnabled = true
                     binding.layoutThree.isEnabled = true
@@ -138,6 +139,10 @@ class NewItemFragment : Fragment() {
 
             binding.submitButton.setOnClickListener {
                 if (binding.itemTextField.text.isNotEmpty() && binding.quantityTextField.text.isNotEmpty()) {
+                    if (binding.quantityTextField.text.toString().toInt() == 0) {
+                        binding.quantityTextField.error = "Quantity must be greater than 0"
+                        return@setOnClickListener
+                    }
                     if (binding.meCheckbox.isChecked || binding.roommateCheckboxOne.isChecked
                         || binding.roommateCheckboxTwo.isChecked || binding.roommateCheckboxThree.isChecked
                         || binding.roommateCheckboxFour.isChecked
@@ -151,6 +156,9 @@ class NewItemFragment : Fragment() {
                                 binding.quantityTextField.text.toString().toInt(),
                             )
                         )
+                    } else {
+                        binding.meCheckbox.error = "Select at least one roommate"
+                        return@setOnClickListener
                     }
                 }
             }
